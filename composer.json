@@ -1,11 +1,11 @@
 {
-  "name": "dibukeu/client-php",
+  "name": "dibuk/client-php",
   "description": "dibuk client php library",
   "license": "MIT",
   "config": {
     "vendor-dir": "vendor",
     "platform": {
-      "php": "~7.0.17"
+      "php": "7.0.17"
     }
   },
   "keywords": ["dibuk"],
