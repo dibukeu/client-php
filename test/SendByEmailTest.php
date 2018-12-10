@@ -19,6 +19,13 @@ class SendByEmailTest extends DibukTestCase {
         ]);
     }
 
+    public function testValidResponse()
+    {
+        $this->withValidResponse();
+        $response = $this->dibukClient->sendByEmail();
+        $this->assertTrue($response);
+    }
+
     public function testResponseExceededLimit()
     {
         $this->dibukClient->withResponse([
