@@ -19,4 +19,4 @@ cache:
 matrix:
   fast_finish: true
 
-script: ./vendor/bin/phpunit
+script: phpunit
