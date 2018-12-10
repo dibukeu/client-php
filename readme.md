@@ -1,5 +1,7 @@
 # Dibuk Client Lib (PHP)
 
+[![Build Status](https://travis-ci.com/dibukeu/client-php.svg?branch=master)](https://travis-ci.com/dibukeu/client-php)
+
 ## Installation
 
 `composer require dibukeu/client-php`
