@@ -1,0 +1,360 @@
+<?php
+
+namespace Dibuk;
+
+use Dibuk\Entity\Format;
+use Dibuk\Entity\Item;
+use Dibuk\Entity\User;
+use Dibuk\Exceptions\ExceededLimitException;
+
+class DibukClient
+{
+
+    const STATUS_OK = 'OK';
+    const STATUS_ERROR = 'ERR';
+    const STATUS_ALREADY_EXISTS = 'HAVEYET';
+
+    const ERROR_NUM_NOT_BUYED = 2004;
+    const ERROR_NUM_EXCEEDED_LIMIT = 2015;
+
+    protected $apiVersion;
+
+    /** @var  User */
+    protected $user;
+    /** @var  Item */
+    protected $item;
+
+    protected $sellerId;
+    protected $signature;
+    protected $url;
+
+    public function __construct($config)
+    {
+        $this->sellerId = $config['sellerId'] ?? null;
+        $this->signature = $config['signature'] ?? null;
+        $this->url = $config['url'] ?? "";
+        $this->apiVersion = $config['version'] ?? "";
+
+        $this->initUser();
+        $this->initItem();
+
+        $this->validateConfig();
+    }
+
+    public function exportItems()
+    {
+        $data = $this->call('export', [
+            'export' => 'categories',
+
+        ]);
+
+        if ($data['status'] != self::STATUS_OK) {
+            throw new \RuntimeException("Dibuk export items call failed with response " . json_encode($data));
+        }
+
+        return $data;
+    }
+
+    public function getReport($dateFrom, $dateTo = null)
+    {
+        $data = $this->call('report', [
+            'date_from' => strtotime($dateFrom),
+            'date_to' => ($dateTo ? strtotime($dateTo) : null)
+        ]);
+
+        if ($data['status'] != self::STATUS_OK) {
+            throw new \RuntimeException("Dibuk report call failed with response " . json_encode($data));
+        }
+
+        return $data;
+    }
+
+    public function sendByEmail($emailTo = null, $repeated = false, $free = false)
+    {
+        $data = $this->call('sendByEmail', [
+            'book_id' => $this->item->id,
+            'send_to_email' => $emailTo ?: $this->user->email,
+            'user_id' => $this->user->id,
+            'user_name' => $this->user->name,
+            'user_surname' => $this->user->surname,
+            'user_email' => $this->user->email
+        ]);
+
+        if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
+            if ($free) {
+                $this->createFreeLicense();
+                return $this->sendByEmail($emailTo, true, true);
+            } else {
+                $this->createLicense(true);
+                return $this->sendByEmail($emailTo, true);
+            }
+        } elseif ($data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_EXCEEDED_LIMIT) {
+            throw new ExceededLimitException([
+                'message' => "Download limit per 24h exceeded, next download will be available on " . $data['eData'],
+                'nextAttemptAvailable' => $data['eData']
+            ]);
+        } elseif ($data['status'] != self::STATUS_OK) {
+            throw new \RuntimeException("Dibuk sendByEmail call failed with response " . json_encode($data));
+        }
+        return true;
+    }
+
+    public function getDibukUserId()
+    {
+        $data = $this->call('getFakeId', [
+            'user_id' => $this->user->id
+        ]);
+
+        if ($data['status'] != self::STATUS_OK || is_null($data['id'])) {
+            throw new \RuntimeException("Dibuk getFakeId call failed with response " . json_encode($data));
+        }
+
+        return (int)$data['id'];
+    }
+
+    public function isProductAvailable($bookId = null)
+    {
+        return $this->call('available', ['book_id' => $bookId ?: $this->item->id, 'user_id' => $this->user->id]);
+    }
+
+    public function getAllDownloadLinks($repeated = false)
+    {
+        if ($this->item->download_links) {
+            return $this->item->download_links;
+        }
+        $this->user->checkValid('minimal');
+        $this->item->checkValid('minimal');
+
+        $data = $this->call('downloadLinks', [
+            'book_id' => $this->item->id,
+            'user_id' => $this->user->id,
+            'user_name' => $this->user->name,
+            'user_surname' => $this->user->surname,
+            'user_email' => $this->user->email,
+        ]);
+
+        if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
+            $this->createLicense(true);
+            return $this->getAllDownloadLinks(true);
+        } elseif ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
+            throw new \RuntimeException("Dibuk getDownloadLinks call " . json_encode($data) . " failed with response " . json_encode($data));
+        }
+
+        $links = [];
+        $format = new Format();
+
+        if (isset($data['data'][0])) {   //eaudiobook - have chapters
+            return $data['data'][0]['formats'];
+        } else {
+            foreach ($data['data'] as $formatId => $url) {
+                $links[$format->getFormatCode($formatId)] = $url;
+            }
+        }
+
+        $this->item->setDownloadLinks($links);
+
+        return $links;
+    }
+
+    public function getDownloadLink($format_code)
+    {
+        $links = $this->getAllDownloadLinks();
+        if (isset($links[$format_code])) {
+            return $links[$format_code];
+        }
+
+        throw new \Exception('Item has not ' . $format_code . ' format.');
+    }
+
+    public function createLicense($createLicenseForce = false)
+    {
+        if ($this->item->license_created && !$createLicenseForce) {
+            return true;
+        }
+        $this->user->checkValid('full');
+        $this->item->checkValid('full');
+
+        $data = $this->call('buy', [
+            'book_id' => $this->item->id,
+            'user_id' => $this->user->id,
+            'user_email' => $this->user->email,
+            'user_order' => $this->item->order_id,
+            'seller_price' => $this->item->price,
+            'payment_channel' => $this->item->payment_id,
+            'user_name' => $this->user->name,
+            'user_surname' => $this->user->surname,
+            'uniq_license_id' => $this->item->unique_id,
+        ]);
+
+        if ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
+            throw new \RuntimeException("Dibuk Buy call failed with response " . json_encode($data));
+        }
+
+        $this->item->setLicenseCreated();
+
+        return [    //todo zjednotit return format, v zasade nepotrebujem rozpisane jednotlive entity
+            'status' => $data['status'],
+            'item' => $this->item,
+            'user' => $this->user
+        ];
+
+    }
+
+    public function createFreeLicense()
+    {
+        if ($this->item->license_created) {
+            return true;
+        }
+        $this->user->checkValid('full');
+        $this->item->checkValid('full');
+
+        $data = $this->call('buy', [
+            'book_id' => $this->item->id,
+            'user_id' => $this->user->id,
+            'user_email' => $this->user->email,
+            'user_order' => $this->item->order_id,
+            'seller_price' => $this->item->price,
+            'payment_channel' => $this->item->payment_id,
+            'user_name' => $this->user->name,
+            'user_surname' => $this->user->surname,
+            'uniq_license_id' => $this->item->unique_id,
+        ]);
+
+        if ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
+            throw new \RuntimeException("Dibuk Buy call failed with response " . json_encode($data));
+        }
+
+        $this->item->setLicenseCreated();
+
+        return [    //todo zjednotit return format, v zasade nepotrebujem rozpisane jednotlive entity
+            'status' => $data['status'],
+            'item' => $this->item,
+            'user' => $this->user
+        ];
+    }
+
+    protected function initUser()
+    {
+        $this->user = new User([]);
+    }
+
+    public function setUser($user)
+    {
+        $this->user = new User($user);
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    protected function initItem()
+    {
+        $this->item = new Item([]);
+    }
+
+    public function setItem($item)
+    {
+
+        $this->item = new Item($item);
+    }
+
+    public function getItem()
+    {
+
+        return $this->item;
+    }
+
+    protected function getAllFormats()
+    {
+        $format = new Format();
+        return $format->getAllFormats();
+    }
+
+    protected function call($action, $additional_parameters = [])
+    {
+        $parameters = [
+                'a' => $action,
+                'v' => $this->apiVersion,
+                'did' => $this->sellerId,
+            ] + $additional_parameters;
+
+        $parameters['ch'] = hash_hmac("sha1", http_build_query($parameters), base64_decode($this->signature));
+
+        $responseData = $this->request($this->url, $parameters);
+
+        if (!is_array($responseData) || !isset($responseData['status'])) {
+            throw new \RuntimeException("Dibuk returned malformed response: '" . json_encode($responseData) . "'");
+        }
+
+        return $responseData;
+    }
+
+    protected function request($url, $params, $type = 'post') {
+        $fullUrl = $this->createUrl($url, $params);
+        //setting the curl parameters.
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+
+        $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+        if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
+            curl_setopt($ch, CURLOPT_CAPATH, $caPathOrFile);
+        } else {
+            curl_setopt($ch, CURLOPT_CAINFO, $caPathOrFile);
+        }
+        
+        //turning off the server and peer verification(TrustManager Concept).
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        if (!empty($this->getConfig('proxy'))) {
+            $proxy = $this->getConfig('proxy');
+            curl_setopt ($ch, CURLOPT_PROXY, $proxy['host']. ":" . $proxy['port']);
+        }
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fullUrl);
+
+        $sResponse = curl_exec($ch);
+        
+        if (curl_errno($ch)) {
+            return [
+                'status'=>'ERR',
+                'eNum'=>curl_errno($ch), 
+                'eMsg'=>curl_error($ch)
+            ];
+        } else {
+            curl_close($ch);
+        }
+
+        if ($this->getConfig('debug')) {
+            echo "R: " . $sResponse . "<br />";
+        }
+
+        return json_decode($sResponse, true);
+    }
+
+    protected function createUrl($base, $params = []) {
+        $url = $base;
+        $queryItems = [];
+        foreach ($params as $key => $value) {
+            $queryItems[] = $key . "=" . urldecode($value);
+        }
+        $query = implode("&", $queryItems);
+        if (!empty($query)) {
+            $url .= "?" . $query;
+        }
+        return $url;
+    }
+
+    protected function validateConfig()
+    {
+
+        if (empty($this->sellerId)) {
+            throw new \Exception('SellerId not specified');
+        }
+        if (empty($this->signature)) {
+            throw new \Exception('Signature not specified');
+        }
+    }
+}

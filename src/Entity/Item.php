@@ -1,0 +1,103 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: samue
+ * Date: 09.05.2017
+ * Time: 12:34
+ */
+
+namespace Dibuk\Entity;
+
+
+class Item
+{
+    public $id, $order_id, $payment_id, $price, $currency, $unique_id, $license_created, $download_links;
+
+    public function __construct($item)
+    {
+        $item += [
+            'id' => null,
+            'order_id' => null,
+            'payment_id' => null,
+            'price' => null,
+            'currency' => null,
+            'unique_id' => null,
+            'license_created' => null
+        ];
+
+        $this->id = $item['id'];
+        $this->order_id = $item['order_id'];
+        $this->payment_id = $item['payment_id'];
+        $this->price = $item['price'];
+        $this->currency = $item['currency'];
+        $this->unique_id = $item['unique_id'];
+        $this->license_created = $item['license_created'];
+
+        /* default values not accessible from contstruct */
+        $this->download_links = [];
+    }
+
+    public function setDownloadLinks($links)
+    {
+        $this->download_links = $links;
+    }
+
+    /**
+     * @param string $type
+     * @return bool
+     * @throws \Exception
+     */
+    public function checkValid($type = 'minimal')
+    {
+        if ($type == 'full') {
+            if ($this->isValidId() && $this->isValidOrderId() && $this->isValidPaymentId() && $this->isValidPrice()) {
+                return true;
+            } else {
+                throw new \Exception('Item is not properly setted (' . $type . '), required fields are: id, order_id, payment_id and price. ');
+            }
+        }
+
+        if ($type == 'order') {
+            if ($this->isValidId() && $this->isValidOrderId()) {
+                return true;
+            } else {
+                throw new \Exception('Item is not properly setted (' . $type . '), required fields are: id, order_id.');
+            }
+        }
+
+        if ($type == 'minimal') {
+            if ($this->isValidId()) {
+                return true;
+            } else {
+                throw new \Exception('Item is not properly setted (' . $type . '), required field is: id.');
+            }
+        }
+
+        throw new \InvalidArgumentException('Invalid valid type');
+    }
+
+    public function setLicenseCreated()
+    {
+        $this->license_created = true;
+    }
+
+    private function isValidId()
+    {
+        return !is_null($this->id) && is_numeric($this->id);
+    }
+
+    private function isValidOrderId()
+    {
+        return !is_null($this->order_id) && is_numeric($this->order_id);
+    }
+
+    private function isValidPaymentId()
+    {
+        return !is_null($this->payment_id) && is_numeric($this->payment_id);
+    }
+
+    private function isValidPrice()
+    {
+        return !is_null($this->price) && is_numeric($this->price) && in_array($this->currency, ['EUR', 'CZK']);
+    }
+}
