@@ -4,7 +4,7 @@ namespace Dibuk\Test;
 
 use PHPUnit\Framework\TestCase;
 
-class DibukTestCase extends TestCase 
+abstract class DibukTestCase extends TestCase 
 {
     protected $dibukClient;
 
