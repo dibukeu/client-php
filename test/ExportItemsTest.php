@@ -2,8 +2,6 @@
 
 namespace Dibuk\Test;
 
-use Dibuk\Test\DibukTestCase;
-
 class ExportItemsTest extends DibukTestCase {
     public function testValidResponse()
     {
@@ -16,9 +14,11 @@ class ExportItemsTest extends DibukTestCase {
         $this->assertTrue($result['data']);
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseError()
     {
-        $this->expectException(\RuntimeException::class);
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_ERROR,
             'data' => true
@@ -26,10 +26,11 @@ class ExportItemsTest extends DibukTestCase {
         $result = $this->dibukClient->exportItems();
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseAlreadyExists()
     {
-        $this->expectException(\RuntimeException::class);
-
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
             'data' => true

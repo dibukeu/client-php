@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class DibukTestCase extends TestCase 
 {
+    /** @var DibukTestClient */
     protected $dibukClient;
 
     public function setUp()
