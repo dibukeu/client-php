@@ -2,9 +2,6 @@
 
 namespace Dibuk\Test;
 
-use Dibuk\Test\DibukTestCase;
-use Dibuk\Exceptions\ExceededLimitException;
-
 class SendByEmailTest extends DibukTestCase {
     private function setValidClient()
     {
@@ -27,7 +24,7 @@ class SendByEmailTest extends DibukTestCase {
     }
 
     /**
-     * @expectedException ExceededLimitException
+     * @expectedException \Dibuk\Exceptions\ExceededLimitException
      */
     public function testResponseExceededLimit()
     {
