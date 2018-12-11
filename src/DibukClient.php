@@ -2,6 +2,7 @@
 
 namespace Dibuk;
 
+use Composer\CaBundle\CaBundle;
 use Dibuk\Entity\Format;
 use Dibuk\Entity\Item;
 use Dibuk\Entity\User;
@@ -30,10 +31,10 @@ class DibukClient
 
     public function __construct($config)
     {
-        $this->sellerId = $config['sellerId'] ?? null;
-        $this->signature = $config['signature'] ?? null;
-        $this->url = $config['url'] ?? "";
-        $this->apiVersion = $config['version'] ?? "";
+        $this->sellerId = isset($config['sellerId']) ? $config['sellerId'] : null;
+        $this->signature = isset($config['signature']) ? $config['signature'] : null;
+        $this->url = isset($config['url']) ? $config['url'] : "";
+        $this->apiVersion = isset($config['version']) ? $config['version'] : "";
 
         $this->initUser();
         $this->initItem();
@@ -290,51 +291,45 @@ class DibukClient
         return $responseData;
     }
 
-    protected function request($url, $params, $type = 'post') {
+    protected function request($url, $params, $type = 'post')
+    {
         $fullUrl = $this->createUrl($url, $params);
         //setting the curl parameters.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
-        $caPathOrFile = \Composer\CaBundle\CaBundle::getSystemCaRootBundlePath();
+        $caPathOrFile = CaBundle::getSystemCaRootBundlePath();
         if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
             curl_setopt($ch, CURLOPT_CAPATH, $caPathOrFile);
         } else {
             curl_setopt($ch, CURLOPT_CAINFO, $caPathOrFile);
         }
-        
+
         //turning off the server and peer verification(TrustManager Concept).
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
-        if (!empty($this->getConfig('proxy'))) {
-            $proxy = $this->getConfig('proxy');
-            curl_setopt ($ch, CURLOPT_PROXY, $proxy['host']. ":" . $proxy['port']);
-        }
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fullUrl);
 
         $sResponse = curl_exec($ch);
-        
+
         if (curl_errno($ch)) {
             return [
-                'status'=>'ERR',
-                'eNum'=>curl_errno($ch), 
-                'eMsg'=>curl_error($ch)
+                'status' => 'ERR',
+                'eNum' => curl_errno($ch),
+                'eMsg' => curl_error($ch)
             ];
         } else {
             curl_close($ch);
         }
 
-        if ($this->getConfig('debug')) {
-            echo "R: " . $sResponse . "<br />";
-        }
-
         return json_decode($sResponse, true);
     }
 
-    protected function createUrl($base, $params = []) {
+    protected function createUrl($base, $params = [])
+    {
         $url = $base;
         $queryItems = [];
         foreach ($params as $key => $value) {

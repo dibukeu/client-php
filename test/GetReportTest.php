@@ -15,23 +15,27 @@ class GetReportTest extends DibukTestCase {
         $this->assertTrue($result['data']);
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseError()
     {
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_ERROR,
             'data' => true
         ]);
-        $this->expectException(\RuntimeException::class);
         $result = $this->dibukClient->getReport($this->from);
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseAlreadyExists()
     {
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
             'data' => true
         ]);
-        $this->expectException(\RuntimeException::class);
         $result = $this->dibukClient->getReport($this->from);
     }
 

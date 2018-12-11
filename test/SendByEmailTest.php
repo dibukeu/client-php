@@ -2,9 +2,6 @@
 
 namespace Dibuk\Test;
 
-use Dibuk\Test\DibukTestCase;
-use Dibuk\Exceptions\ExceededLimitException;
-
 class SendByEmailTest extends DibukTestCase {
     private function setValidClient()
     {
@@ -26,6 +23,9 @@ class SendByEmailTest extends DibukTestCase {
         $this->assertTrue($response);
     }
 
+    /**
+     * @expectedException \Dibuk\Exceptions\ExceededLimitException
+     */
     public function testResponseExceededLimit()
     {
         $this->dibukClient->withResponse([
@@ -33,10 +33,12 @@ class SendByEmailTest extends DibukTestCase {
             'eNum' => DibukTestClient::ERROR_NUM_EXCEEDED_LIMIT,
             'eData' => 'mock_data'
         ]);
-        $this->expectException(ExceededLimitException::class);
         $response = $this->dibukClient->sendByEmail();
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseError()
     {
         $this->dibukClient->withResponse([
@@ -44,10 +46,12 @@ class SendByEmailTest extends DibukTestCase {
             'eNum' => null,
             'eData' => 'mock_data'
         ]);
-        $this->expectException(\RuntimeException::class);
         $response = $this->dibukClient->sendByEmail();
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseAlreadyExists()
     {
         $this->dibukClient->withResponse([
@@ -55,7 +59,6 @@ class SendByEmailTest extends DibukTestCase {
             'eNum' => null,
             'eData' => 'mock_data'
         ]);
-        $this->expectException(\RuntimeException::class);
         $response = $this->dibukClient->sendByEmail();
     }
 
