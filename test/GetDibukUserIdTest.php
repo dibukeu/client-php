@@ -24,33 +24,39 @@ class GetDibukUserIdTest extends DibukTestCase {
         $this->assertEquals($result, $this->userId);
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseError()
     {
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_ERROR,
             'id' => $this->userId
         ]);
-        $this->expectException(\RuntimeException::class);
         $result = $this->dibukClient->getDibukUserId();
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseAlreadyExists()
     {
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
             'id' => $this->userId
         ]);
-        $this->expectException(\RuntimeException::class);
         $result = $this->dibukClient->getDibukUserId();
     }
 
+    /**
+     * @expectedException \RuntimeException
+     */
     public function testResponseUserNull()
     {
         $this->dibukClient->withResponse([
             'status' => DibukTestClient::STATUS_OK,
             'id' => null
         ]);
-        $this->expectException(\RuntimeException::class);
         $result = $this->dibukClient->getDibukUserId();
     }
 
