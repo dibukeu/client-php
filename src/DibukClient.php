@@ -272,6 +272,12 @@ class DibukClient
         return $format->getAllFormats();
     }
 
+    /**
+     * @param string $action
+     * @param array $additional_parameters
+     * @return array|mixed
+     * @throws \Exception
+     */
     protected function call($action, $additional_parameters = [])
     {
         $parameters = [
@@ -280,7 +286,11 @@ class DibukClient
                 'did' => $this->sellerId,
             ] + $additional_parameters;
 
-        $parameters['ch'] = hash_hmac("sha1", http_build_query($parameters), base64_decode($this->signature));
+        $base64signature = base64_decode($this->signature);
+        if ($base64signature === false) {
+            throw new \Exception('Invalid signature');
+        }
+        $parameters['ch'] = hash_hmac("sha1", http_build_query($parameters), $base64signature);
 
         $responseData = $this->request($this->url, $parameters);
 
@@ -322,6 +332,10 @@ class DibukClient
             ];
         } else {
             curl_close($ch);
+        }
+
+        if (is_bool($sResponse)) {
+            throw new \Exception('Api call failed');
         }
 
         return json_decode($sResponse, true);
