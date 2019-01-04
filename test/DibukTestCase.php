@@ -4,19 +4,21 @@ namespace Dibuk\Test;
 
 use PHPUnit\Framework\TestCase;
 
-abstract class DibukTestCase extends TestCase 
+abstract class DibukTestCase extends TestCase
 {
     /** @var DibukTestClient */
     protected $dibukClient;
 
     public function setUp()
     {
-        $this->dibukClient = new DibukTestClient([
+        $this->dibukClient = new DibukTestClient(
+            [
             'signature' => 'test_secret',
             'sellerId' => 1,
             'version' => '2.3',
             'url' => 'api.dibuk.lsk'
-        ]);
+            ]
+        );
     }
 
     protected function assertIsSubarray($example, $result)
@@ -33,9 +35,11 @@ abstract class DibukTestCase extends TestCase
 
     public function withValidResponse()
     {
-        $this->dibukClient->withResponse([
+        $this->dibukClient->withResponse(
+            [
             'status' => DibukTestClient::STATUS_OK,
             'data' => true
-        ]);
+            ]
+        );
     }
 }

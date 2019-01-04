@@ -44,10 +44,12 @@ class DibukClient
 
     public function exportItems()
     {
-        $data = $this->call('export', [
-            'export' => 'categories',
+        $data = $this->call(
+            'export', [
+                'export' => 'categories',
 
-        ]);
+            ]
+        );
 
         if ($data['status'] != self::STATUS_OK) {
             throw new \RuntimeException("Dibuk export items call failed with response " . json_encode($data));
@@ -58,10 +60,12 @@ class DibukClient
 
     public function getReport($dateFrom, $dateTo = null)
     {
-        $data = $this->call('report', [
-            'date_from' => strtotime($dateFrom),
-            'date_to' => ($dateTo ? strtotime($dateTo) : null)
-        ]);
+        $data = $this->call(
+            'report', [
+                'date_from' => strtotime($dateFrom),
+                'date_to' => ($dateTo ? strtotime($dateTo) : null)
+            ]
+        );
 
         if ($data['status'] != self::STATUS_OK) {
             throw new \RuntimeException("Dibuk report call failed with response " . json_encode($data));
@@ -72,14 +76,16 @@ class DibukClient
 
     public function sendByEmail($emailTo = null, $repeated = false, $free = false)
     {
-        $data = $this->call('sendByEmail', [
-            'book_id' => $this->item->id,
-            'send_to_email' => $emailTo ?: $this->user->email,
-            'user_id' => $this->user->id,
-            'user_name' => $this->user->name,
-            'user_surname' => $this->user->surname,
-            'user_email' => $this->user->email
-        ]);
+        $data = $this->call(
+            'sendByEmail', [
+                'book_id' => $this->item->id,
+                'send_to_email' => $emailTo ?: $this->user->email,
+                'user_id' => $this->user->id,
+                'user_name' => $this->user->name,
+                'user_surname' => $this->user->surname,
+                'user_email' => $this->user->email
+            ]
+        );
 
         if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
             if ($free) {
@@ -90,10 +96,12 @@ class DibukClient
                 return $this->sendByEmail($emailTo, true);
             }
         } elseif ($data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_EXCEEDED_LIMIT) {
-            throw new ExceededLimitException([
-                'message' => "Download limit per 24h exceeded, next download will be available on " . $data['eData'],
-                'nextAttemptAvailable' => $data['eData']
-            ]);
+            throw new ExceededLimitException(
+                [
+                    'message' => "Download limit per 24h exceeded, next download will be available on " . $data['eData'],
+                    'nextAttemptAvailable' => $data['eData']
+                ]
+            );
         } elseif ($data['status'] != self::STATUS_OK) {
             throw new \RuntimeException("Dibuk sendByEmail call failed with response " . json_encode($data));
         }
@@ -102,9 +110,11 @@ class DibukClient
 
     public function getDibukUserId()
     {
-        $data = $this->call('getFakeId', [
-            'user_id' => $this->user->id
-        ]);
+        $data = $this->call(
+            'getFakeId', [
+                'user_id' => $this->user->id
+            ]
+        );
 
         if ($data['status'] != self::STATUS_OK || is_null($data['id'])) {
             throw new \RuntimeException("Dibuk getFakeId call failed with response " . json_encode($data));
@@ -126,13 +136,15 @@ class DibukClient
         $this->user->checkValid('minimal');
         $this->item->checkValid('minimal');
 
-        $data = $this->call('downloadLinks', [
-            'book_id' => $this->item->id,
-            'user_id' => $this->user->id,
-            'user_name' => $this->user->name,
-            'user_surname' => $this->user->surname,
-            'user_email' => $this->user->email,
-        ]);
+        $data = $this->call(
+            'downloadLinks', [
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+                'user_name' => $this->user->name,
+                'user_surname' => $this->user->surname,
+                'user_email' => $this->user->email,
+            ]
+        );
 
         if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
             $this->createLicense(true);
@@ -175,17 +187,19 @@ class DibukClient
         $this->user->checkValid('full');
         $this->item->checkValid('full');
 
-        $data = $this->call('buy', [
-            'book_id' => $this->item->id,
-            'user_id' => $this->user->id,
-            'user_email' => $this->user->email,
-            'user_order' => $this->item->order_id,
-            'seller_price' => $this->item->price,
-            'payment_channel' => $this->item->payment_id,
-            'user_name' => $this->user->name,
-            'user_surname' => $this->user->surname,
-            'uniq_license_id' => $this->item->unique_id,
-        ]);
+        $data = $this->call(
+            'buy', [
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+                'user_email' => $this->user->email,
+                'user_order' => $this->item->order_id,
+                'seller_price' => $this->item->price,
+                'payment_channel' => $this->item->payment_id,
+                'user_name' => $this->user->name,
+                'user_surname' => $this->user->surname,
+                'uniq_license_id' => $this->item->unique_id,
+            ]
+        );
 
         if ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
             throw new \RuntimeException("Dibuk Buy call failed with response " . json_encode($data));
@@ -209,17 +223,19 @@ class DibukClient
         $this->user->checkValid('full');
         $this->item->checkValid('full');
 
-        $data = $this->call('buy', [
-            'book_id' => $this->item->id,
-            'user_id' => $this->user->id,
-            'user_email' => $this->user->email,
-            'user_order' => $this->item->order_id,
-            'seller_price' => $this->item->price,
-            'payment_channel' => $this->item->payment_id,
-            'user_name' => $this->user->name,
-            'user_surname' => $this->user->surname,
-            'uniq_license_id' => $this->item->unique_id,
-        ]);
+        $data = $this->call(
+            'buy', [
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+                'user_email' => $this->user->email,
+                'user_order' => $this->item->order_id,
+                'seller_price' => $this->item->price,
+                'payment_channel' => $this->item->payment_id,
+                'user_name' => $this->user->name,
+                'user_surname' => $this->user->surname,
+                'uniq_license_id' => $this->item->unique_id,
+            ]
+        );
 
         if ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
             throw new \RuntimeException("Dibuk Buy call failed with response " . json_encode($data));
@@ -273,8 +289,8 @@ class DibukClient
     }
 
     /**
-     * @param string $action
-     * @param array $additional_parameters
+     * @param  string $action
+     * @param  array $additional_parameters
      * @return array|mixed
      * @throws \Exception
      */

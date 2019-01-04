@@ -2,13 +2,16 @@
 
 namespace Dibuk\Test;
 
-class ExportItemsTest extends DibukTestCase {
+class ExportItemsTest extends DibukTestCase
+{
     public function testValidResponse()
     {
-        $this->dibukClient->withResponse([
+        $this->dibukClient->withResponse(
+            [
             'status' => DibukTestClient::STATUS_OK,
             'data' => true
-        ]);
+            ]
+        );
         $result = $this->dibukClient->exportItems();
         
         $this->assertTrue($result['data']);
@@ -19,10 +22,12 @@ class ExportItemsTest extends DibukTestCase {
      */
     public function testResponseError()
     {
-        $this->dibukClient->withResponse([
+        $this->dibukClient->withResponse(
+            [
             'status' => DibukTestClient::STATUS_ERROR,
             'data' => true
-        ]);
+            ]
+        );
         $result = $this->dibukClient->exportItems();
     }
 
@@ -31,10 +36,12 @@ class ExportItemsTest extends DibukTestCase {
      */
     public function testResponseAlreadyExists()
     {
-        $this->dibukClient->withResponse([
+        $this->dibukClient->withResponse(
+            [
             'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
             'data' => true
-        ]);
+            ]
+        );
         $result = $this->dibukClient->exportItems();
     }
 
@@ -43,9 +50,11 @@ class ExportItemsTest extends DibukTestCase {
         $this->withValidResponse();
         $result = $this->dibukClient->exportItems();
         
-        $this->assertIsSubarray([
+        $this->assertIsSubarray(
+            [
             'a' => 'export',
             'export' => 'categories'
-        ], $this->dibukClient->requestData['params']);
+            ], $this->dibukClient->requestData['params']
+        );
     }
 }

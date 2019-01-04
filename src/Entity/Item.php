@@ -43,7 +43,7 @@ class Item
     }
 
     /**
-     * @param string $type
+     * @param  string $type
      * @return bool
      * @throws \Exception
      */

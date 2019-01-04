@@ -22,7 +22,8 @@ class User
 
     /**
      * Types: minimal, email, full
-     * @param string $type
+     *
+     * @param  string $type
      * @return bool
      * @throws \Exception
      */

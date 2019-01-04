@@ -60,6 +60,7 @@ class Format
 
     /**
      * Vracia zoznam format by "code", ID pouzivame len interne
+     *
      * @return array
      */
     public function getAllFormats()
