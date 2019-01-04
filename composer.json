@@ -21,12 +21,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Dibukeu\\": "src"
+      "DibukEu\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Dibukeu\\Test\\": "test"
+      "DibukEu\\Test\\": "test"
     }
   }
 }

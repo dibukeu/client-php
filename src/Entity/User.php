@@ -1,6 +1,6 @@
 <?php
 
-namespace Dibukeu\Entity;
+namespace DibukEu\Entity;
 
 class User
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Dibukeu;
+namespace DibukEu;
 
 use Composer\CaBundle\CaBundle;
-use Dibukeu\Entity\Format;
-use Dibukeu\Entity\Item;
-use Dibukeu\Entity\User;
-use Dibukeu\Exceptions\ExceededLimitException;
+use DibukEu\Entity\Format;
+use DibukEu\Entity\Item;
+use DibukEu\Entity\User;
+use DibukEu\Exceptions\ExceededLimitException;
 
 class DibukClient
 {

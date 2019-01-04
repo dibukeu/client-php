@@ -1,8 +1,8 @@
 <?php
 
-namespace Dibukeu\Test;
+namespace DibukEu\Test;
 
-use Dibukeu\Test\DibukTestCase;
+use DibukEu\Test\DibukTestCase;
 
 class GetDibukUserIdTest extends DibukTestCase
 {

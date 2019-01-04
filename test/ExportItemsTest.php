@@ -1,6 +1,6 @@
 <?php
 
-namespace Dibukeu\Test;
+namespace DibukEu\Test;
 
 class ExportItemsTest extends DibukTestCase
 {
