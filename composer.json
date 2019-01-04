@@ -3,10 +3,7 @@
   "description": "dibuk client php library",
   "license": "MIT",
   "config": {
-    "vendor-dir": "vendor",
-    "platform": {
-      "php": "7.0.17"
-    }
+    "vendor-dir": "vendor"
   },
   "keywords": ["dibuk"],
   "authors": [

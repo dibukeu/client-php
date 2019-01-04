@@ -22,35 +22,35 @@ class Format
     const MP3 = 9;
 
     private $formats = array(
-        self::EPUB     => array(
-            'title'=>'EPUB',
-            'code'=>'epub',
-            'mimetype'=>'application/epub+zip',
+        self::EPUB => array(
+            'title' => 'EPUB',
+            'code' => 'epub',
+            'mimetype' => 'application/epub+zip',
         ), //without protection
-        self::PDF      => array(
-            'title'=>'PDF',
-            'code'=>'pdf',
-            'mimetype'=>'application/pdf',
+        self::PDF => array(
+            'title' => 'PDF',
+            'code' => 'pdf',
+            'mimetype' => 'application/pdf',
         ), //without protection
-        self::MOBI     => array(
-            'title'=>'MOBI',
-            'code'=>'mobi',
-            'mimetype'=>'application/x-mobipocket-ebook',
+        self::MOBI => array(
+            'title' => 'MOBI',
+            'code' => 'mobi',
+            'mimetype' => 'application/x-mobipocket-ebook',
         ),  //without protection
         self::ACS_EPUB => array(
-            'title'=>'EPUB (Adobe DRM)',
-            'code'=>'acs_epub',
-            'mimetype'=>'application/epub+zip',
+            'title' => 'EPUB (Adobe DRM)',
+            'code' => 'acs_epub',
+            'mimetype' => 'application/epub+zip',
         ), //adobe DRM
-        self::ACS_PDF  => array(
-            'title'=>'PDF (Adobe DRM)',
-            'code'=>'acs_pdf',
-            'mimetype'=>'application/pdf',
+        self::ACS_PDF => array(
+            'title' => 'PDF (Adobe DRM)',
+            'code' => 'acs_pdf',
+            'mimetype' => 'application/pdf',
         ), //adobe DRM
-        self::SDRM_EPUB=> array('title'=>'EPUB',  'code'=>'social_epub',       'mimetype'=>'application/epub+zip'),
-        self::SDRM_PDF => array('title'=>'PDF',   'code'=>'social_pdf',        'mimetype'=>'application/pdf'),
-        self::SDRM_MOBI=> array('title'=>'MOBI',  'code'=>'social_mobi',       'mimetype'=>'application/x-mobipocket-ebook'),
-        self::MP3      => array('title'=>'MP3',   'code'=>'mp3',               'mimetype'=>'audio/mpeg')
+        self::SDRM_EPUB => array('title' => 'EPUB', 'code' => 'social_epub', 'mimetype' => 'application/epub+zip'),
+        self::SDRM_PDF => array('title' => 'PDF', 'code' => 'social_pdf', 'mimetype' => 'application/pdf'),
+        self::SDRM_MOBI => array('title' => 'MOBI', 'code' => 'social_mobi', 'mimetype' => 'application/x-mobipocket-ebook'),
+        self::MP3 => array('title' => 'MP3', 'code' => 'mp3', 'mimetype' => 'audio/mpeg')
     );
 
     public function __construct()
@@ -62,21 +62,26 @@ class Format
      * Vracia zoznam format by "code", ID pouzivame len interne
      * @return array
      */
-    public function getAllFormats() {
-        return array_combine(array_column($this->formats, 'code'), $this->formats);
+    public function getAllFormats()
+    {
+        $formats = array_combine(array_column($this->formats, 'code'), $this->formats);
+        if (is_bool($formats)) {
+            throw new \InvalidArgumentException('Invalid formats');
+        }
+        return $formats;
     }
 
     /**
      * Internal
      */
-    public function getFormatCode($format_id) {
-        if(isset($this->formats[$format_id])) {
+    public function getFormatCode($format_id)
+    {
+        if (isset($this->formats[$format_id])) {
             return $this->formats[$format_id]['code'];
         }
 
-        throw new \Exception('Format '.$format_id.' not found');
+        throw new \Exception('Format ' . $format_id . ' not found');
     }
-
 
 
 }

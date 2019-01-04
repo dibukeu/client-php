@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: samue
- * Date: 09.05.2017
- * Time: 12:30
- */
 namespace Dibuk\Entity;
 
 class User
@@ -19,7 +13,7 @@ class User
             'email' => null,
             'name' => null,
             'surname' => null
-            ];
+        ];
         $this->id = $user['id'];
         $this->email = $user['email'];
         $this->name = $user['name'];
@@ -28,23 +22,22 @@ class User
 
     /**
      * Types: minimal, email, full
-     * @param string
+     * @param string $type
      * @return bool
      * @throws \Exception
      */
-
-    public function checkValid($type='minimal')
+    public function checkValid($type = 'minimal')
     {
 
-        if($type=='full') {
+        if ($type == 'full') {
             $valid = $this->isValidId() && $this->isValidEmail() && $this->isValidName() && $this->isValidSurname();
-        } elseif($type=='email') {
+        } elseif ($type == 'email') {
             $valid = $this->isValidId() && $this->isValidEmail();
         } else {
             $valid = $this->isValidId();
         }
 
-        if(!$valid) {
+        if (!$valid) {
             throw new \Exception('User is not properly setted');
         }
 
