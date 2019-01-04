@@ -164,7 +164,7 @@ class DibukClient
             return $links[$format_code];
         }
 
-        throw new \Exception('Item has not ' . $format_code . ' format.');
+        throw new \Exception('Item has not ' . $format_code . ' format. Available: ' . json_encode($links));
     }
 
     public function createLicense($createLicenseForce = false)
@@ -266,7 +266,7 @@ class DibukClient
         return $this->item;
     }
 
-    protected function getAllFormats()
+    public function getAllFormats()
     {
         $format = new Format();
         return $format->getAllFormats();
@@ -293,7 +293,6 @@ class DibukClient
 
     protected function request($url, $params, $type = 'post')
     {
-        $fullUrl = $this->createUrl($url, $params);
         //setting the curl parameters.
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -307,11 +306,11 @@ class DibukClient
         }
 
         //turning off the server and peer verification(TrustManager Concept).
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fullUrl);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->createUrlParams($params));
 
         $sResponse = curl_exec($ch);
 
@@ -328,6 +327,16 @@ class DibukClient
         return json_decode($sResponse, true);
     }
 
+    protected function createUrlParams($params = [])
+    {
+        $queryItems = [];
+        foreach ($params as $key => $value) {
+            $queryItems[] = $key . "=" . urldecode($value);
+        }
+        $query = implode("&", $queryItems);
+        return $query;
+    }
+
     protected function createUrl($base, $params = [])
     {
         $url = $base;
@@ -335,7 +344,7 @@ class DibukClient
         foreach ($params as $key => $value) {
             $queryItems[] = $key . "=" . urldecode($value);
         }
-        $query = implode("&", $queryItems);
+        $query = $this->createUrlParams($params);
         if (!empty($query)) {
             $url .= "?" . $query;
         }
@@ -344,7 +353,6 @@ class DibukClient
 
     protected function validateConfig()
     {
-
         if (empty($this->sellerId)) {
             throw new \Exception('SellerId not specified');
         }
