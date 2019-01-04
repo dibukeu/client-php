@@ -6,8 +6,7 @@
  * Time: 15:08
  */
 
-namespace Dibuk\Entity;
-
+namespace Dibukeu\Entity;
 
 class Format
 {

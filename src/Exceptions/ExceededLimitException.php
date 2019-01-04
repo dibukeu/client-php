@@ -6,8 +6,7 @@
  * Time: 12:52
  */
 
-namespace Dibuk\Exceptions;
-
+namespace Dibukeu\Exceptions;
 
 use Throwable;
 

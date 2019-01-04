@@ -1,8 +1,8 @@
 <?php
 
-namespace Dibuk\Test;
+namespace Dibukeu\Test;
 
-use Dibuk\DibukClient;
+use Dibukeu\DibukClient;
 
 class DibukTestClient extends DibukClient
 {

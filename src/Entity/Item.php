@@ -6,8 +6,7 @@
  * Time: 12:34
  */
 
-namespace Dibuk\Entity;
-
+namespace Dibukeu\Entity;
 
 class Item
 {

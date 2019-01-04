@@ -1,8 +1,8 @@
 <?php
 
-namespace Dibuk\Test;
+namespace Dibukeu\Test;
 
-use Dibuk\Test\DibukTestCase;
+use Dibukeu\Test\DibukTestCase;
 
 class GetReportTest extends DibukTestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dibuk\Test;
+namespace Dibukeu\Test;
 
 class SendByEmailTest extends DibukTestCase
 {
@@ -29,7 +29,7 @@ class SendByEmailTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \Dibuk\Exceptions\ExceededLimitException
+     * @expectedException \Dibukeu\Exceptions\ExceededLimitException
      */
     public function testResponseExceededLimit()
     {

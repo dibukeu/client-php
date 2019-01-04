@@ -1,6 +1,6 @@
 <?php
 
-namespace Dibuk\Test;
+namespace Dibukeu\Test;
 
 use PHPUnit\Framework\TestCase;
 
