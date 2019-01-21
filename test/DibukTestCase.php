@@ -9,7 +9,8 @@ abstract class DibukTestCase extends TestCase
     /** @var DibukTestClient */
     protected $dibukClient;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->dibukClient = new DibukTestClient(
             [
             'signature' => 'test_secret',
@@ -20,9 +21,11 @@ abstract class DibukTestCase extends TestCase
         );
     }
 
-    protected function assertIsSubarray($example, $result){
+    protected function assertIsSubarray($example, $result)
+    {
         if (!is_array($example)) {
             $this->assertEquals($example, $result);
+
             return;
         }
         foreach ($example as $key => $value) {
