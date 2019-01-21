@@ -20,8 +20,7 @@ abstract class DibukTestCase extends TestCase
         );
     }
 
-    protected function assertIsSubarray($example, $result)
-    {
+    protected function assertIsSubarray($example, $result){
         if (!is_array($example)) {
             $this->assertEquals($example, $result);
             return;
