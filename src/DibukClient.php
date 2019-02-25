@@ -359,21 +359,12 @@ class DibukClient
 
     protected function createUrlParams($params = [])
     {
-        $queryItems = [];
-        foreach ($params as $key => $value) {
-            $queryItems[] = $key . "=" . urldecode($value);
-        }
-        $query = implode("&", $queryItems);
-        return $query;
+        return http_build_query($params);
     }
 
     protected function createUrl($base, $params = [])
     {
         $url = $base;
-        $queryItems = [];
-        foreach ($params as $key => $value) {
-            $queryItems[] = $key . "=" . urldecode($value);
-        }
         $query = $this->createUrlParams($params);
         if (!empty($query)) {
             $url .= "?" . $query;
