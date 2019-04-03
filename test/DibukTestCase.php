@@ -9,7 +9,11 @@ abstract class DibukTestCase extends TestCase
     /** @var DibukTestClient */
     protected $dibukClient;
 
-    public function setUp()
+    /**
+     * setUp
+     * @return void
+     */
+    public function setUp(): void
     {
         $this->dibukClient = new DibukTestClient(
             [
