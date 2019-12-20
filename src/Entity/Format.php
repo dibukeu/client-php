@@ -20,37 +20,38 @@ class Format
     const SDRM_MOBI = 8;
     const MP3 = 9;
 
-    private $formats = array(
-        self::EPUB => array(
+    /** @var array */
+    private $formats = [
+        self::EPUB => [
             'title' => 'EPUB',
             'code' => 'epub',
             'mimetype' => 'application/epub+zip',
-        ), //without protection
-        self::PDF => array(
+        ], //without protection
+        self::PDF => [
             'title' => 'PDF',
             'code' => 'pdf',
             'mimetype' => 'application/pdf',
-        ), //without protection
-        self::MOBI => array(
+        ], //without protection
+        self::MOBI => [
             'title' => 'MOBI',
             'code' => 'mobi',
             'mimetype' => 'application/x-mobipocket-ebook',
-        ),  //without protection
-        self::ACS_EPUB => array(
+        ],  //without protection
+        self::ACS_EPUB => [
             'title' => 'EPUB (Adobe DRM)',
             'code' => 'acs_epub',
             'mimetype' => 'application/epub+zip',
-        ), //adobe DRM
-        self::ACS_PDF => array(
+        ], //adobe DRM
+        self::ACS_PDF => [
             'title' => 'PDF (Adobe DRM)',
             'code' => 'acs_pdf',
             'mimetype' => 'application/pdf',
-        ), //adobe DRM
-        self::SDRM_EPUB => array('title' => 'EPUB', 'code' => 'social_epub', 'mimetype' => 'application/epub+zip'),
-        self::SDRM_PDF => array('title' => 'PDF', 'code' => 'social_pdf', 'mimetype' => 'application/pdf'),
-        self::SDRM_MOBI => array('title' => 'MOBI', 'code' => 'social_mobi', 'mimetype' => 'application/x-mobipocket-ebook'),
-        self::MP3 => array('title' => 'MP3', 'code' => 'mp3', 'mimetype' => 'audio/mpeg')
-    );
+        ], //adobe DRM
+        self::SDRM_EPUB => ['title' => 'EPUB', 'code' => 'social_epub', 'mimetype' => 'application/epub+zip'],
+        self::SDRM_PDF => ['title' => 'PDF', 'code' => 'social_pdf', 'mimetype' => 'application/pdf'],
+        self::SDRM_MOBI => ['title' => 'MOBI', 'code' => 'social_mobi', 'mimetype' => 'application/x-mobipocket-ebook'],
+        self::MP3 => ['title' => 'MP3', 'code' => 'mp3', 'mimetype' => 'audio/mpeg']
+    ];
 
     public function __construct()
     {
@@ -72,7 +73,9 @@ class Format
     }
 
     /**
-     * Internal
+     * @param int $format_id
+     * @return string
+     * @throws \Exception
      */
     public function getFormatCode($format_id)
     {
