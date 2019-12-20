@@ -6,7 +6,6 @@ use Composer\CaBundle\CaBundle;
 use DibukEu\Entity\Format;
 use DibukEu\Entity\Item;
 use DibukEu\Entity\User;
-
 use DibukEu\Exceptions\ExceededLimitException;
 use RuntimeException;
 
@@ -105,34 +104,38 @@ class DibukClient
     public function sendByEmail($emailTo = null, $repeated = false, $free = false)
     {
         $data = $this->call(
-            'sendByEmail', [
+            'sendByEmail',
+            [
                 'book_id' => $this->item->id,
                 'send_to_email' => $emailTo ?: $this->user->email,
                 'user_id' => $this->user->id,
                 'user_name' => $this->user->name,
                 'user_surname' => $this->user->surname,
-                'user_email' => $this->user->email
+                'user_email' => $this->user->email,
             ]
         );
 
         if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
             if ($free) {
                 $this->createFreeLicense();
+
                 return $this->sendByEmail($emailTo, true, true);
             } else {
                 $this->createLicense(true);
+
                 return $this->sendByEmail($emailTo, true);
             }
         } elseif ($data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_EXCEEDED_LIMIT) {
             throw new ExceededLimitException(
                 [
                     'message' => "Download limit per 24h exceeded, next download will be available on " . $data['eData'],
-                    'nextAttemptAvailable' => $data['eData']
+                    'nextAttemptAvailable' => $data['eData'],
                 ]
             );
         } elseif ($data['status'] != self::STATUS_OK) {
             throw new RuntimeException("Dibuk sendByEmail call failed with response " . json_encode($data));
         }
+
         return true;
     }
 
@@ -143,8 +146,9 @@ class DibukClient
     public function getDibukUserId()
     {
         $data = $this->call(
-            'getFakeId', [
-                'user_id' => $this->user->id
+            'getFakeId',
+            [
+                'user_id' => $this->user->id,
             ]
         );
 

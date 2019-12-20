@@ -50,12 +50,11 @@ class Format
         self::SDRM_EPUB => ['title' => 'EPUB', 'code' => 'social_epub', 'mimetype' => 'application/epub+zip'],
         self::SDRM_PDF => ['title' => 'PDF', 'code' => 'social_pdf', 'mimetype' => 'application/pdf'],
         self::SDRM_MOBI => ['title' => 'MOBI', 'code' => 'social_mobi', 'mimetype' => 'application/x-mobipocket-ebook'],
-        self::MP3 => ['title' => 'MP3', 'code' => 'mp3', 'mimetype' => 'audio/mpeg']
+        self::MP3 => ['title' => 'MP3', 'code' => 'mp3', 'mimetype' => 'audio/mpeg'],
     ];
 
     public function __construct()
     {
-
     }
 
     /**
