@@ -2,10 +2,23 @@
 
 namespace DibukEu\Entity;
 
+use Exception;
+
 class User
 {
-    public $id, $email, $name, $surname;
+    /** @var int */
+    public $id;
+    /** @var string */
+    public $email;
+    /** @var string */
+    public $name;
+    /** @var string */
+    public $surname;
 
+    /**
+     * User constructor.
+     * @param array $user
+     */
     public function __construct($user)
     {
         $user += [
@@ -25,7 +38,7 @@ class User
      *
      * @param  string $type
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function checkValid($type = 'minimal')
     {
@@ -39,28 +52,40 @@ class User
         }
 
         if (!$valid) {
-            throw new \Exception('User is not properly setted');
+            throw new Exception('User is not properly setted');
         }
 
         return true;
 
     }
 
+    /**
+     * @return bool
+     */
     private function isValidId()
     {
         return !empty($this->id) && is_numeric($this->id);
     }
 
+    /**
+     * @return bool
+     */
     private function isValidEmail()
     {
-        return filter_var($this->email, FILTER_VALIDATE_EMAIL);
+        return boolval(filter_var($this->email, FILTER_VALIDATE_EMAIL));
     }
 
+    /**
+     * @return bool
+     */
     private function isValidName()
     {
         return !empty($this->name);
     }
 
+    /**
+     * @return bool
+     */
     private function isValidSurname()
     {
         return !empty($this->surname);

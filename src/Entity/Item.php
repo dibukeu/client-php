@@ -10,8 +10,27 @@ namespace DibukEu\Entity;
 
 class Item
 {
-    public $id, $order_id, $payment_id, $price, $currency, $unique_id, $license_created, $download_links;
+    /** @var int|null */
+    public $id;
+    /** @var int|null */
+    public $order_id;
+    /** @var int|null */
+    public $payment_id;
+    /** @var float|null */
+    public $price;
+    /** @var string|null */
+    public $currency;
+    /** @var int|null */
+    public $unique_id;
+    /** @var bool|null */
+    public $license_created;
+    /** @var array */
+    public $download_links = [];
 
+    /**
+     * Item constructor.
+     * @param array $item
+     */
     public function __construct($item)
     {
         $item += [
@@ -32,17 +51,21 @@ class Item
         $this->unique_id = $item['unique_id'];
         $this->license_created = $item['license_created'];
 
-        /* default values not accessible from contstruct */
+        /* default values not accessible from construct */
         $this->download_links = [];
     }
 
+    /**
+     * @param array $links
+     * @return void
+     */
     public function setDownloadLinks($links)
     {
         $this->download_links = $links;
     }
 
     /**
-     * @param  string $type
+     * @param string $type
      * @return bool
      * @throws \Exception
      */
@@ -75,26 +98,41 @@ class Item
         throw new \InvalidArgumentException('Invalid valid type');
     }
 
+    /**
+     * @return void
+     */
     public function setLicenseCreated()
     {
         $this->license_created = true;
     }
 
+    /**
+     * @return bool
+     */
     private function isValidId()
     {
         return !is_null($this->id) && is_numeric($this->id);
     }
 
+    /**
+     * @return bool
+     */
     private function isValidOrderId()
     {
         return !is_null($this->order_id) && is_numeric($this->order_id);
     }
 
+    /**
+     * @return bool
+     */
     private function isValidPaymentId()
     {
         return !is_null($this->payment_id) && is_numeric($this->payment_id);
     }
 
+    /**
+     * @return bool
+     */
     private function isValidPrice()
     {
         return !is_null($this->price) && is_numeric($this->price) && in_array($this->currency, ['EUR', 'CZK']);
