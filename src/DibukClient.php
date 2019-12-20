@@ -266,9 +266,8 @@ class DibukClient
         return [    //todo zjednotit return format, v zasade nepotrebujem rozpisane jednotlive entity
             'status' => $data['status'],
             'item' => $this->item,
-            'user' => $this->user
+            'user' => $this->user,
         ];
-
     }
 
     /**
@@ -306,7 +305,7 @@ class DibukClient
         return [    //todo zjednotit return format, v zasade nepotrebujem rozpisane jednotlive entity
             'status' => $data['status'],
             'item' => $this->item,
-            'user' => $this->user
+            'user' => $this->user,
         ];
     }
 
@@ -368,6 +367,7 @@ class DibukClient
     public function getAllFormats()
     {
         $format = new Format();
+
         return $format->getAllFormats();
     }
 
@@ -468,6 +468,7 @@ class DibukClient
         if (!empty($query)) {
             $url .= "?" . $query;
         }
+
         return $url;
     }
 
