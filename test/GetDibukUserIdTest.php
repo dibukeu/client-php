@@ -6,23 +6,24 @@ use DibukEu\Test\DibukTestCase;
 
 class GetDibukUserIdTest extends DibukTestCase
 {
+    /** @var int  */
     private $userId = 1;
 
-    private function setUser()
+    private function setUser():void
     {
         $this->dibukClient->setUser(
             [
-            'id' => $this->userId
+                'id' => $this->userId
             ]
         );
     }
 
-    public function testValidResponse()
+    public function testValidResponse(): void
     {
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_OK,
-            'id' => $this->userId
+                'status' => DibukTestClient::STATUS_OK,
+                'id' => $this->userId
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -32,12 +33,12 @@ class GetDibukUserIdTest extends DibukTestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testResponseError()
+    public function testResponseError(): void
     {
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_ERROR,
-            'id' => $this->userId
+                'status' => DibukTestClient::STATUS_ERROR,
+                'id' => $this->userId
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -46,12 +47,12 @@ class GetDibukUserIdTest extends DibukTestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testResponseAlreadyExists()
+    public function testResponseAlreadyExists(): void
     {
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
-            'id' => $this->userId
+                'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
+                'id' => $this->userId
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -60,33 +61,33 @@ class GetDibukUserIdTest extends DibukTestCase
     /**
      * @expectedException \RuntimeException
      */
-    public function testResponseUserNull()
+    public function testResponseUserNull(): void
     {
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_OK,
-            'id' => null
+                'status' => DibukTestClient::STATUS_OK,
+                'id' => null
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
     }
 
-    public function testValidRequest()
+    public function testValidRequest(): void
     {
         $this->setUser();
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_OK,
-            'id' => $this->userId
+                'status' => DibukTestClient::STATUS_OK,
+                'id' => $this->userId
             ]
         );
-        
+
         $result = $this->dibukClient->getDibukUserId();
-        
+
         $this->assertIsSubarray(
             [
-            'a' => 'getFakeId',
-            'user_id' => $this->userId,
+                'a' => 'getFakeId',
+                'user_id' => $this->userId,
             ], $this->dibukClient->requestData['params']
         );
     }

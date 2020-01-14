@@ -11,21 +11,26 @@ abstract class DibukTestCase extends TestCase
 
     /**
      * setUp
+     *
      * @return void
      */
     public function setUp(): void
     {
         $this->dibukClient = new DibukTestClient(
             [
-            'signature' => 'test_secret',
-            'sellerId' => 1,
-            'version' => '2.3',
-            'url' => 'api.dibuk.lsk'
+                'signature' => 'test_secret',
+                'sellerId' => 1,
+                'version' => '2.3',
+                'url' => 'api.dibuk.lsk'
             ]
         );
     }
 
-    protected function assertIsSubarray($example, $result)
+    /**
+     * @param array|string $example
+     * @param array $result
+     */
+    protected function assertIsSubarray($example, $result): void
     {
         if (!is_array($example)) {
             $this->assertEquals($example, $result);
@@ -37,12 +42,12 @@ abstract class DibukTestCase extends TestCase
         }
     }
 
-    public function withValidResponse()
+    public function withValidResponse(): void
     {
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_OK,
-            'data' => true
+                'status' => DibukTestClient::STATUS_OK,
+                'data' => true
             ]
         );
     }

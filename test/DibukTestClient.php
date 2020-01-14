@@ -6,15 +6,20 @@ use DibukEu\DibukClient;
 
 class DibukTestClient extends DibukClient
 {
+    /** @var array */
     private $response;
+    /** @var array */
     public $requestData;
-    
-    public function withResponse($response)
+
+    /**
+     * @param array $response
+     */
+    public function withResponse($response): void
     {
         $this->response = $response;
     }
 
-    protected function request($url, $params, $type = 'post')
+    protected function request($url, $params, $type = 'post'): array
     {
         $this->requestData = [
             'url' => $url,
