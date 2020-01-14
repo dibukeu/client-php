@@ -143,7 +143,11 @@ class DibukClient
         return true;
     }
 
-    public function changeOwnership()
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function changeOwnership(): void
     {
         $data = $this->call(
             'changeOwnership',
@@ -341,7 +345,7 @@ class DibukClient
     }
 
     /**
-     * @param array $user
+     * @param array $user new User
      * @return void
      */
     public function setUser($user)
