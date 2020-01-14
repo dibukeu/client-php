@@ -147,7 +147,7 @@ class DibukClient
      * @return bool
      * @throws \Exception
      */
-    public function changeOwnership(): void
+    public function changeOwnership(): bool
     {
         $data = $this->call(
             'changeOwnership',
