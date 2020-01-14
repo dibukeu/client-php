@@ -8,6 +8,7 @@ class DibukClientTest extends DibukTestCase
 {
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidRequest(): void
     {

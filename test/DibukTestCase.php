@@ -29,6 +29,7 @@ abstract class DibukTestCase extends TestCase
     /**
      * @param array|string $example Input
      * @param array $result Asserted result
+     * @return void
      */
     protected function assertIsSubarray($example, $result): void
     {
@@ -42,6 +43,9 @@ abstract class DibukTestCase extends TestCase
         }
     }
 
+    /**
+     * @return void
+     */
     public function withValidResponse(): void
     {
         $this->dibukClient->withResponse(

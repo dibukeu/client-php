@@ -12,6 +12,7 @@ class IsProductAvailableTest extends DibukTestCase
     private $userId = 101;
 
     /**
+     * @return void
      * @throws \Exception
      */
     public function testValidResponse(): void
@@ -22,6 +23,7 @@ class IsProductAvailableTest extends DibukTestCase
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
     public function testResponseError(): void
@@ -38,6 +40,7 @@ class IsProductAvailableTest extends DibukTestCase
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
@@ -54,6 +57,7 @@ class IsProductAvailableTest extends DibukTestCase
     }
 
     /**
+     * @return void
      * @throws \Exception
      */
     public function testValidRequest(): void

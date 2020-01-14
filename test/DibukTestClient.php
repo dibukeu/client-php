@@ -21,9 +21,9 @@ class DibukTestClient extends DibukClient
     }
 
     /**
-     * @param string $url
-     * @param array $params
-     * @param string $type
+     * @param string $url Request url
+     * @param array $params Request params
+     * @param string $type request type (GET or POST, ..)
      * @return array
      */
     protected function request($url, $params, $type = 'post'): array

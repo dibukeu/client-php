@@ -13,6 +13,7 @@ class GetReportTest extends DibukTestCase
 
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidResponse(): void
     {
@@ -23,6 +24,8 @@ class GetReportTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseError(): void
     {
@@ -37,6 +40,8 @@ class GetReportTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
     {
@@ -51,6 +56,7 @@ class GetReportTest extends DibukTestCase
 
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidRequest(): void
     {

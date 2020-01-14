@@ -6,6 +6,7 @@ class SendByEmailTest extends DibukTestCase
 {
     /**
      * set up valid client
+     * @return void
      */
     private function setValidClient(): void
     {
@@ -26,6 +27,7 @@ class SendByEmailTest extends DibukTestCase
 
     /**
      * @throws \DibukEu\Exceptions\ExceededLimitException
+     * @return void
      */
     public function testValidResponse(): void
     {
@@ -36,6 +38,7 @@ class SendByEmailTest extends DibukTestCase
 
     /**
      * @expectedException \Dibukeu\Exceptions\ExceededLimitException
+     * @return void
      */
     public function testResponseExceededLimit(): void
     {
@@ -66,6 +69,8 @@ class SendByEmailTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \DibukEu\Exceptions\ExceededLimitException
      */
     public function testResponseAlreadyExists(): void
     {
@@ -81,6 +86,7 @@ class SendByEmailTest extends DibukTestCase
 
     /**
      * @throws \DibukEu\Exceptions\ExceededLimitException
+     * @return void
      */
     public function testValidRequest(): void
     {
@@ -118,6 +124,7 @@ class SendByEmailTest extends DibukTestCase
 
     /**
      * @throws \DibukEu\Exceptions\ExceededLimitException
+     * @return void
      */
     public function testInvalidRequest(): void
     {

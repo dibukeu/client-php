@@ -11,6 +11,7 @@ class GetDibukUserIdTest extends DibukTestCase
 
     /**
      * Set user
+     * @return void
      */
     private function setUser(): void
     {
@@ -23,6 +24,7 @@ class GetDibukUserIdTest extends DibukTestCase
 
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidResponse(): void
     {
@@ -38,6 +40,8 @@ class GetDibukUserIdTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseError(): void
     {
@@ -52,6 +56,8 @@ class GetDibukUserIdTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
     {
@@ -66,6 +72,8 @@ class GetDibukUserIdTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseUserNull(): void
     {
@@ -80,6 +88,7 @@ class GetDibukUserIdTest extends DibukTestCase
 
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidRequest(): void
     {

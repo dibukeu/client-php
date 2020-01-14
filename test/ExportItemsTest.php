@@ -6,6 +6,7 @@ class ExportItemsTest extends DibukTestCase
 {
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidResponse(): void
     {
@@ -22,6 +23,8 @@ class ExportItemsTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseError(): void
     {
@@ -36,6 +39,8 @@ class ExportItemsTest extends DibukTestCase
 
     /**
      * @expectedException \RuntimeException
+     * @return void
+     * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
     {
@@ -50,6 +55,7 @@ class ExportItemsTest extends DibukTestCase
 
     /**
      * @throws \Exception
+     * @return void
      */
     public function testValidRequest(): void
     {
