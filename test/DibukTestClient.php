@@ -12,13 +12,20 @@ class DibukTestClient extends DibukClient
     public $requestData;
 
     /**
-     * @param array $response
+     * @param array $response Response from test client
+     * @return void
      */
     public function withResponse($response): void
     {
         $this->response = $response;
     }
 
+    /**
+     * @param string $url
+     * @param array $params
+     * @param string $type
+     * @return array
+     */
     protected function request($url, $params, $type = 'post'): array
     {
         $this->requestData = [

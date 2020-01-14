@@ -6,6 +6,9 @@ use DibukEu\Test\DibukTestCase;
 
 class DibukClientTest extends DibukTestCase
 {
+    /**
+     * @throws \Exception
+     */
     public function testValidRequest(): void
     {
         $this->dibukClient->withResponse(

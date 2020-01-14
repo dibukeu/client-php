@@ -11,6 +11,9 @@ class IsProductAvailableTest extends DibukTestCase
     /** @var int */
     private $userId = 101;
 
+    /**
+     * @throws \Exception
+     */
     public function testValidResponse(): void
     {
         $this->withValidResponse();
@@ -18,6 +21,9 @@ class IsProductAvailableTest extends DibukTestCase
         $this->assertTrue($result['data']);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testResponseError(): void
     {
         // Q: toto by podla mna malo padnut
@@ -31,6 +37,9 @@ class IsProductAvailableTest extends DibukTestCase
         $this->assertTrue($result['data']);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testResponseAlreadyExists(): void
     {
         // Q: toto by podla mna malo padnut
@@ -44,6 +53,9 @@ class IsProductAvailableTest extends DibukTestCase
         $this->assertTrue($result['data']);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testValidRequest(): void
     {
         $this->withValidResponse();

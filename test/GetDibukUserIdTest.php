@@ -9,6 +9,9 @@ class GetDibukUserIdTest extends DibukTestCase
     /** @var int  */
     private $userId = 1;
 
+    /**
+     * Set user
+     */
     private function setUser(): void
     {
         $this->dibukClient->setUser(
@@ -18,6 +21,9 @@ class GetDibukUserIdTest extends DibukTestCase
         );
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testValidResponse(): void
     {
         $this->dibukClient->withResponse(
@@ -72,6 +78,9 @@ class GetDibukUserIdTest extends DibukTestCase
         $result = $this->dibukClient->getDibukUserId();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testValidRequest(): void
     {
         $this->setUser();

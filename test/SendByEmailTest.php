@@ -4,6 +4,9 @@ namespace DibukEu\Test;
 
 class SendByEmailTest extends DibukTestCase
 {
+    /**
+     * set up valid client
+     */
     private function setValidClient(): void
     {
         $this->dibukClient->setItem(
@@ -21,6 +24,9 @@ class SendByEmailTest extends DibukTestCase
         );
     }
 
+    /**
+     * @throws \DibukEu\Exceptions\ExceededLimitException
+     */
     public function testValidResponse(): void
     {
         $this->withValidResponse();
@@ -73,6 +79,9 @@ class SendByEmailTest extends DibukTestCase
         $response = $this->dibukClient->sendByEmail();
     }
 
+    /**
+     * @throws \DibukEu\Exceptions\ExceededLimitException
+     */
     public function testValidRequest(): void
     {
         $this->withValidResponse();
@@ -107,6 +116,9 @@ class SendByEmailTest extends DibukTestCase
         );
     }
 
+    /**
+     * @throws \DibukEu\Exceptions\ExceededLimitException
+     */
     public function testInvalidRequest(): void
     {
         $this->withValidResponse();

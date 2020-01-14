@@ -11,6 +11,9 @@ class GetReportTest extends DibukTestCase
     /** @var string */
     private $to = "2018-01-02 01:00:00";
 
+    /**
+     * @throws \Exception
+     */
     public function testValidResponse(): void
     {
         $this->withValidResponse();
@@ -46,6 +49,9 @@ class GetReportTest extends DibukTestCase
         $result = $this->dibukClient->getReport($this->from);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testValidRequest(): void
     {
         $this->withValidResponse();

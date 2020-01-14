@@ -4,6 +4,9 @@ namespace DibukEu\Test;
 
 class ExportItemsTest extends DibukTestCase
 {
+    /**
+     * @throws \Exception
+     */
     public function testValidResponse(): void
     {
         $this->dibukClient->withResponse(
@@ -45,6 +48,9 @@ class ExportItemsTest extends DibukTestCase
         $result = $this->dibukClient->exportItems();
     }
 
+    /**
+     * @throws \Exception
+     */
     public function testValidRequest(): void
     {
         $this->withValidResponse();

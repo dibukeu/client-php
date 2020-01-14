@@ -27,8 +27,8 @@ abstract class DibukTestCase extends TestCase
     }
 
     /**
-     * @param array|string $example
-     * @param array $result
+     * @param array|string $example Input
+     * @param array $result Asserted result
      */
     protected function assertIsSubarray($example, $result): void
     {
