@@ -6,24 +6,29 @@ use DibukEu\Test\DibukTestCase;
 
 class DibukClientTest extends DibukTestCase
 {
-    public function testValidRequest()
+    /**
+     * @throws \Exception
+     * @return void
+     */
+    public function testValidRequest(): void
     {
         $this->dibukClient->withResponse(
             [
-            'status' => DibukTestClient::STATUS_OK
+                'status' => DibukTestClient::STATUS_OK,
             ]
         );
         $result = $this->dibukClient->exportItems();
-        
+
         $this->assertIsSubarray(
             [
-            'url' => 'api.dibuk.lsk',
-            'params' => [
-                'v' => '2.3',
-                'did' => 1,
+                'url' => 'api.dibuk.lsk',
+                'params' => [
+                    'v' => '2.3',
+                    'did' => 1,
+                ],
+                'type' => 'post',
             ],
-            'type' => 'post'
-            ], $this->dibukClient->requestData
+            $this->dibukClient->requestData
         );
         $this->assertArrayhasKey('ch', $this->dibukClient->requestData['params']);
     }
