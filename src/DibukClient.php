@@ -84,7 +84,8 @@ class DibukClient
     public function getReport($dateFrom, $dateTo = null)
     {
         $data = $this->call(
-            'report', [
+            'report',
+            [
                 'date_from' => strtotime($dateFrom),
                 'date_to' => ($dateTo ? strtotime($dateTo) : null),
             ]
