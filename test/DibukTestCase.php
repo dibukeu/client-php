@@ -21,7 +21,7 @@ abstract class DibukTestCase extends TestCase
                 'signature' => 'test_secret',
                 'sellerId' => 1,
                 'version' => '2.3',
-                'url' => 'api.dibuk.lsk'
+                'url' => 'api.dibuk.lsk',
             ]
         );
     }
@@ -47,7 +47,7 @@ abstract class DibukTestCase extends TestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_OK,
-                'data' => true
+                'data' => true,
             ]
         );
     }

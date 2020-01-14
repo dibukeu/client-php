@@ -4,11 +4,11 @@ namespace DibukEu\Test;
 
 class SendByEmailTest extends DibukTestCase
 {
-    private function setValidClient():void
+    private function setValidClient(): void
     {
         $this->dibukClient->setItem(
             [
-                'id' => 50
+                'id' => 50,
             ]
         );
         $this->dibukClient->setUser(
@@ -16,7 +16,7 @@ class SendByEmailTest extends DibukTestCase
                 'id' => 101,
                 'name' => 'test',
                 'surname' => 'ington',
-                'email' => 'abcd@xyz.com'
+                'email' => 'abcd@xyz.com',
             ]
         );
     }
@@ -37,7 +37,7 @@ class SendByEmailTest extends DibukTestCase
             [
                 'status' => DibukTestClient::STATUS_ERROR,
                 'eNum' => DibukTestClient::ERROR_NUM_EXCEEDED_LIMIT,
-                'eData' => 'mock_data'
+                'eData' => 'mock_data',
             ]
         );
         $response = $this->dibukClient->sendByEmail();
@@ -52,7 +52,7 @@ class SendByEmailTest extends DibukTestCase
             [
                 'status' => DibukTestClient::STATUS_ERROR,
                 'eNum' => null,
-                'eData' => 'mock_data'
+                'eData' => 'mock_data',
             ]
         );
         $response = $this->dibukClient->sendByEmail();
@@ -67,7 +67,7 @@ class SendByEmailTest extends DibukTestCase
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
                 'eNum' => null,
-                'eData' => 'mock_data'
+                'eData' => 'mock_data',
             ]
         );
         $response = $this->dibukClient->sendByEmail();
@@ -87,8 +87,9 @@ class SendByEmailTest extends DibukTestCase
                 'user_id' => 101,
                 'user_name' => 'test',
                 'user_surname' => 'ington',
-                'user_email' => 'abcd@xyz.com'
-            ], $this->dibukClient->requestData['params']
+                'user_email' => 'abcd@xyz.com',
+            ],
+            $this->dibukClient->requestData['params']
         );
 
         $result = $this->dibukClient->sendByEmail("iny@aaa.sk");
@@ -100,8 +101,9 @@ class SendByEmailTest extends DibukTestCase
                 'user_id' => 101,
                 'user_name' => 'test',
                 'user_surname' => 'ington',
-                'user_email' => 'abcd@xyz.com'
-            ], $this->dibukClient->requestData['params']
+                'user_email' => 'abcd@xyz.com',
+            ],
+            $this->dibukClient->requestData['params']
         );
     }
 
@@ -111,7 +113,7 @@ class SendByEmailTest extends DibukTestCase
 
         $this->dibukClient->setItem(
             [
-                'id' => 50
+                'id' => 50,
             ]
         );
         // Q: nemalo by toto padnut, kedze nemam nastavene id usera?
@@ -119,7 +121,7 @@ class SendByEmailTest extends DibukTestCase
             [
                 'name' => 'test',
                 'surname' => 'ington',
-                'email' => 'abcd@xyz.com'
+                'email' => 'abcd@xyz.com',
             ]
         );
 
@@ -131,8 +133,9 @@ class SendByEmailTest extends DibukTestCase
                 'send_to_email' => 'abcd@xyz.com',
                 'user_name' => 'test',
                 'user_surname' => 'ington',
-                'user_email' => 'abcd@xyz.com'
-            ], $this->dibukClient->requestData['params']
+                'user_email' => 'abcd@xyz.com',
+            ],
+            $this->dibukClient->requestData['params']
         );
     }
 }

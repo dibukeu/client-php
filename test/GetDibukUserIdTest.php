@@ -9,11 +9,11 @@ class GetDibukUserIdTest extends DibukTestCase
     /** @var int  */
     private $userId = 1;
 
-    private function setUser():void
+    private function setUser(): void
     {
         $this->dibukClient->setUser(
             [
-                'id' => $this->userId
+                'id' => $this->userId,
             ]
         );
     }
@@ -23,7 +23,7 @@ class GetDibukUserIdTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_OK,
-                'id' => $this->userId
+                'id' => $this->userId,
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -38,7 +38,7 @@ class GetDibukUserIdTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
-                'id' => $this->userId
+                'id' => $this->userId,
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -52,7 +52,7 @@ class GetDibukUserIdTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
-                'id' => $this->userId
+                'id' => $this->userId,
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -66,7 +66,7 @@ class GetDibukUserIdTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_OK,
-                'id' => null
+                'id' => null,
             ]
         );
         $result = $this->dibukClient->getDibukUserId();
@@ -78,7 +78,7 @@ class GetDibukUserIdTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_OK,
-                'id' => $this->userId
+                'id' => $this->userId,
             ]
         );
 

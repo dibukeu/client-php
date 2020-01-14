@@ -10,7 +10,7 @@ class DibukClientTest extends DibukTestCase
     {
         $this->dibukClient->withResponse(
             [
-                'status' => DibukTestClient::STATUS_OK
+                'status' => DibukTestClient::STATUS_OK,
             ]
         );
         $result = $this->dibukClient->exportItems();
@@ -22,8 +22,9 @@ class DibukClientTest extends DibukTestCase
                     'v' => '2.3',
                     'did' => 1,
                 ],
-                'type' => 'post'
-            ], $this->dibukClient->requestData
+                'type' => 'post',
+            ],
+            $this->dibukClient->requestData
         );
         $this->assertArrayhasKey('ch', $this->dibukClient->requestData['params']);
     }

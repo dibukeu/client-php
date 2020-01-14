@@ -26,7 +26,7 @@ class GetReportTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->getReport($this->from);
@@ -40,7 +40,7 @@ class GetReportTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->getReport($this->from);
@@ -56,8 +56,9 @@ class GetReportTest extends DibukTestCase
             [
                 'a' => 'report',
                 'date_from' => strtotime($this->from),
-                'date_to' => null
-            ], $this->dibukClient->requestData['params']
+                'date_to' => null,
+            ],
+            $this->dibukClient->requestData['params']
         );
 
         $result = $this->dibukClient->getReport($this->from, $this->to);
@@ -66,8 +67,9 @@ class GetReportTest extends DibukTestCase
             [
                 'a' => 'report',
                 'date_from' => strtotime($this->from),
-                'date_to' => strtotime($this->to)
-            ], $this->dibukClient->requestData['params']
+                'date_to' => strtotime($this->to),
+            ],
+            $this->dibukClient->requestData['params']
         );
     }
 }

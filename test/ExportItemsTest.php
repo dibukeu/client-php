@@ -9,7 +9,7 @@ class ExportItemsTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_OK,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->exportItems();
@@ -25,7 +25,7 @@ class ExportItemsTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->exportItems();
@@ -39,7 +39,7 @@ class ExportItemsTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->exportItems();
@@ -53,8 +53,9 @@ class ExportItemsTest extends DibukTestCase
         $this->assertIsSubarray(
             [
                 'a' => 'export',
-                'export' => 'categories'
-            ], $this->dibukClient->requestData['params']
+                'export' => 'categories',
+            ],
+            $this->dibukClient->requestData['params']
         );
     }
 }

@@ -24,7 +24,7 @@ class IsProductAvailableTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->isProductAvailable($this->bookId);
@@ -37,7 +37,7 @@ class IsProductAvailableTest extends DibukTestCase
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
-                'data' => true
+                'data' => true,
             ]
         );
         $result = $this->dibukClient->isProductAvailable($this->bookId);
@@ -50,7 +50,7 @@ class IsProductAvailableTest extends DibukTestCase
 
         $this->dibukClient->setUser(
             [
-                'id' => $this->userId
+                'id' => $this->userId,
             ]
         );
         $result = $this->dibukClient->isProductAvailable($this->bookId);
@@ -59,8 +59,9 @@ class IsProductAvailableTest extends DibukTestCase
             [
                 'a' => 'available',
                 'book_id' => $this->bookId,
-                'user_id' => $this->userId
-            ], $this->dibukClient->requestData['params']
+                'user_id' => $this->userId,
+            ],
+            $this->dibukClient->requestData['params']
         );
     }
 }
