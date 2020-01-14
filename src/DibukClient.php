@@ -24,6 +24,8 @@ class DibukClient
 
     /** @var  User */
     protected $user;
+    /** @var  User */
+    protected $newUser;
     /** @var  Item */
     protected $item;
 
@@ -36,6 +38,7 @@ class DibukClient
 
     /**
      * DibukClient constructor.
+     *
      * @param array $config
      * @throws \Exception
      */
@@ -83,7 +86,7 @@ class DibukClient
         $data = $this->call(
             'report', [
                 'date_from' => strtotime($dateFrom),
-                'date_to' => ($dateTo ? strtotime($dateTo) : null)
+                'date_to' => ($dateTo ? strtotime($dateTo) : null),
             ]
         );
 
@@ -134,6 +137,24 @@ class DibukClient
             );
         } elseif ($data['status'] != self::STATUS_OK) {
             throw new RuntimeException("Dibuk sendByEmail call failed with response " . json_encode($data));
+        }
+
+        return true;
+    }
+
+    public function changeOwnership()
+    {
+        $data = $this->call(
+            'changeOwnership',
+            [
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+                'new_user_id' => $this->newUser->id,
+            ]
+        );
+
+        if ($data['status'] != self::STATUS_OK) {
+            throw new RuntimeException("Dibuk changeOwnership call failed with response " . json_encode($data));
         }
 
         return true;
@@ -194,6 +215,7 @@ class DibukClient
 
         if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
             $this->createLicense(true);
+
             return $this->getAllDownloadLinks(true);
         } elseif ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
             throw new RuntimeException("Dibuk getDownloadLinks call " . json_encode($data) . " failed with response " . json_encode($data));
@@ -335,6 +357,23 @@ class DibukClient
     }
 
     /**
+     * @param array $user
+     * @return void
+     */
+    public function setNewUser($user)
+    {
+        $this->newUser = new User($user);
+    }
+
+    /**
+     * @return User
+     */
+    public function getNewUser()
+    {
+        return $this->newUser;
+    }
+
+    /**
      * @return void
      */
     protected function initItem()
@@ -434,7 +473,7 @@ class DibukClient
             return [
                 'status' => 'ERR',
                 'eNum' => curl_errno($ch),
-                'eMsg' => curl_error($ch)
+                'eMsg' => curl_error($ch),
             ];
         } else {
             curl_close($ch);
