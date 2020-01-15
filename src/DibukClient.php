@@ -345,7 +345,7 @@ class DibukClient
     }
 
     /**
-     * @param array $user new User
+     * @param array $user Set User
      * @return void
      */
     public function setUser($user)
@@ -362,7 +362,7 @@ class DibukClient
     }
 
     /**
-     * @param array $user
+     * @param array $user New user
      * @return void
      */
     public function setNewUser($user)

@@ -21,6 +21,7 @@ class ChangeOwnershipTest extends DibukTestCase
 
     /**
      * @throws \Exception
+     * @return void
      */
     public function testCallApi(): void
     {
