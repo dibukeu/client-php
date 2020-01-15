@@ -37,7 +37,8 @@ class ChangeOwnershipTest extends DibukTestCase
         $this->dibukClient->expects($this->once())
             ->method('call')
             ->with(
-                'changeOwnership', [
+                'changeOwnership',
+                [
                     'book_id' => 50,
                     'user_id' => 101,
                     'new_user_id' => 202,
