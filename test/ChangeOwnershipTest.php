@@ -43,6 +43,7 @@ class ChangeOwnershipTest extends DibukTestCase
                     'book_id' => 50,
                     'user_id' => 101,
                     'new_user_id' => 202,
+                    'new_user_email' => 'new@example.com',
                 ]
             )->willReturn(['status' => DibukClient::STATUS_OK]);
 
