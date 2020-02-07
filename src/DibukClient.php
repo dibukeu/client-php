@@ -155,6 +155,7 @@ class DibukClient
                 'book_id' => $this->item->id,
                 'user_id' => $this->user->id,
                 'new_user_id' => $this->newUser->id,
+                'new_user_email' => $this->newUser->email,
             ]
         );
 
