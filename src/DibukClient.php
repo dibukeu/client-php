@@ -402,7 +402,9 @@ class DibukClient
      */
     public function getItem()
     {
-
+        $item = $this->item;
+        $item = null;
+        $item->id;
         return $this->item;
     }
 
