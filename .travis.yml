@@ -42,4 +42,4 @@ after_success:
   - if [[ $CODECOVERAGE = 1 ]]; then bash <(curl -s https://codecov.io/bash); fi
 
 before_script:
-  - composer install
+  - composer update
