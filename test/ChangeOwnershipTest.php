@@ -54,11 +54,11 @@ class ChangeOwnershipTest extends DibukTestCase
     /**
      * @return                   void
      * @throws                   \Exception
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Dibuk changeOwnership call failed with response {"status":"ERR"}
      */
     public function testResponseError(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk changeOwnership call failed with response {"status":"ERR"}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,

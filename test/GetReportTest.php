@@ -23,12 +23,13 @@ class GetReportTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseError(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk report call failed with response {"status":"ERR","data":true}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
@@ -39,12 +40,13 @@ class GetReportTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk report call failed with response {"status":"HAVEYET","data":true}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
