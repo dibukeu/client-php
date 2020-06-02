@@ -461,7 +461,13 @@ class DibukClient
 
         $caPathOrFile = CaBundle::getSystemCaRootBundlePath();
         if ($caPathOrFile !== false) {
-            if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
+            $isDir = is_dir($caPathOrFile);
+            if (!$isDir && is_link($caPathOrFile)) {
+                $link = readlink($caPathOrFile);
+                assert($link !== false);
+                $isDir = is_dir($link);
+            }
+            if ($isDir) {
                 curl_setopt($ch, CURLOPT_CAPATH, $caPathOrFile);
             } else {
                 curl_setopt($ch, CURLOPT_CAINFO, $caPathOrFile);
