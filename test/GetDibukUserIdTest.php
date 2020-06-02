@@ -39,12 +39,13 @@ class GetDibukUserIdTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseError(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk getFakeId call failed with response {"status":"ERR","id":1}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
@@ -55,12 +56,13 @@ class GetDibukUserIdTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk getFakeId call failed with response {"status":"HAVEYET","id":1}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
@@ -71,12 +73,13 @@ class GetDibukUserIdTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseUserNull(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk getFakeId call failed with response {"status":"OK","id":null}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_OK,

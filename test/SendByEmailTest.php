@@ -2,6 +2,8 @@
 
 namespace DibukEu\Test;
 
+use DibukEu\Exceptions\ExceededLimitException;
+
 class SendByEmailTest extends DibukTestCase
 {
     /**
@@ -26,8 +28,8 @@ class SendByEmailTest extends DibukTestCase
     }
 
     /**
-     * @throws \DibukEu\Exceptions\ExceededLimitException
      * @return void
+     * @throws \DibukEu\Exceptions\ExceededLimitException
      */
     public function testValidResponse(): void
     {
@@ -37,11 +39,11 @@ class SendByEmailTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \Dibukeu\Exceptions\ExceededLimitException
      * @return void
      */
     public function testResponseExceededLimit(): void
     {
+        $this->expectException(ExceededLimitException::class);
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
@@ -52,11 +54,9 @@ class SendByEmailTest extends DibukTestCase
         $response = $this->dibukClient->sendByEmail();
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testResponseError(): void
     {
+        $this->expectException(\RuntimeException::class);
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
@@ -68,12 +68,12 @@ class SendByEmailTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \DibukEu\Exceptions\ExceededLimitException
      */
     public function testResponseAlreadyExists(): void
     {
+        $this->expectException(\RuntimeException::class);
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
@@ -85,8 +85,8 @@ class SendByEmailTest extends DibukTestCase
     }
 
     /**
-     * @throws \DibukEu\Exceptions\ExceededLimitException
      * @return void
+     * @throws \DibukEu\Exceptions\ExceededLimitException
      */
     public function testValidRequest(): void
     {
@@ -123,8 +123,8 @@ class SendByEmailTest extends DibukTestCase
     }
 
     /**
-     * @throws \DibukEu\Exceptions\ExceededLimitException
      * @return void
+     * @throws \DibukEu\Exceptions\ExceededLimitException
      */
     public function testInvalidRequest(): void
     {

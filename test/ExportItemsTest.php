@@ -5,8 +5,8 @@ namespace DibukEu\Test;
 class ExportItemsTest extends DibukTestCase
 {
     /**
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      */
     public function testValidResponse(): void
     {
@@ -22,12 +22,13 @@ class ExportItemsTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseError(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk export items call failed with response {"status":"ERR","data":true}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ERROR,
@@ -38,12 +39,13 @@ class ExportItemsTest extends DibukTestCase
     }
 
     /**
-     * @expectedException \RuntimeException
      * @return void
      * @throws \Exception
      */
     public function testResponseAlreadyExists(): void
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Dibuk export items call failed with response {"status":"HAVEYET","data":true}');
         $this->dibukClient->withResponse(
             [
                 'status' => DibukTestClient::STATUS_ALREADY_EXISTS,
@@ -54,8 +56,8 @@ class ExportItemsTest extends DibukTestCase
     }
 
     /**
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      */
     public function testValidRequest(): void
     {
