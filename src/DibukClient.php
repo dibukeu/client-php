@@ -460,10 +460,12 @@ class DibukClient
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
 
         $caPathOrFile = CaBundle::getSystemCaRootBundlePath();
-        if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
-            curl_setopt($ch, CURLOPT_CAPATH, $caPathOrFile);
-        } else {
-            curl_setopt($ch, CURLOPT_CAINFO, $caPathOrFile);
+        if ($caPathOrFile !== false) {
+            if (is_dir($caPathOrFile) || (is_link($caPathOrFile) && is_dir(readlink($caPathOrFile)))) {
+                curl_setopt($ch, CURLOPT_CAPATH, $caPathOrFile);
+            } else {
+                curl_setopt($ch, CURLOPT_CAINFO, $caPathOrFile);
+            }
         }
 
         //turning off the server and peer verification(TrustManager Concept).
