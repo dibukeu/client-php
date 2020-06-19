@@ -34,7 +34,7 @@ class SendByEmailTest extends DibukTestCase
     public function testValidResponse(): void
     {
         $this->withValidResponse();
-        $response = $this->dibukClient->sendByEmail();
+        $response = $this->dibukClient->send();
         $this->assertTrue($response);
     }
 
@@ -51,7 +51,7 @@ class SendByEmailTest extends DibukTestCase
                 'eData' => 'mock_data',
             ]
         );
-        $response = $this->dibukClient->sendByEmail();
+        $response = $this->dibukClient->send();
     }
 
     public function testResponseError(): void
@@ -64,7 +64,7 @@ class SendByEmailTest extends DibukTestCase
                 'eData' => 'mock_data',
             ]
         );
-        $response = $this->dibukClient->sendByEmail();
+        $response = $this->dibukClient->send();
     }
 
     /**
@@ -81,7 +81,7 @@ class SendByEmailTest extends DibukTestCase
                 'eData' => 'mock_data',
             ]
         );
-        $response = $this->dibukClient->sendByEmail();
+        $response = $this->dibukClient->send();
     }
 
     /**
@@ -93,7 +93,7 @@ class SendByEmailTest extends DibukTestCase
         $this->withValidResponse();
         $this->setValidClient();
 
-        $result = $this->dibukClient->sendByEmail();
+        $result = $this->dibukClient->send();
         $this->assertIsSubarray(
             [
                 'a' => 'sendByEmail',
@@ -107,7 +107,7 @@ class SendByEmailTest extends DibukTestCase
             $this->dibukClient->requestData['params']
         );
 
-        $result = $this->dibukClient->sendByEmail("iny@aaa.sk");
+        $result = $this->dibukClient->send("iny@aaa.sk");
         $this->assertIsSubarray(
             [
                 'a' => 'sendByEmail',
@@ -144,7 +144,7 @@ class SendByEmailTest extends DibukTestCase
             ]
         );
 
-        $result = $this->dibukClient->sendByEmail();
+        $result = $this->dibukClient->send();
         $this->assertIsSubarray(
             [
                 'a' => 'sendByEmail',
