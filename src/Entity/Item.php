@@ -26,6 +26,8 @@ class Item
     public $license_created;
     /** @var array */
     public $download_links = [];
+    /** @var array */
+    public $attachments_links = [];
 
     /**
      * Item constructor.
@@ -62,6 +64,15 @@ class Item
     public function setDownloadLinks($links)
     {
         $this->download_links = $links;
+    }
+
+    /**
+     * @param array $links
+     * @return void
+     */
+    public function setAttachmentsLinks($links)
+    {
+        $this->attachments_links = $links;
     }
 
     /**

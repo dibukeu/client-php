@@ -244,6 +244,51 @@ class DibukClient
     }
 
     /**
+     * @param bool $repeated
+     * @return array
+     * @throws \Exception
+     */
+    public function getAttachmentsLinks(bool $repeated = false): array
+    {
+        if ($this->item->attachments_links) {
+            return $this->item->attachments_links;
+        }
+        $this->user->checkValid('minimal');
+        $this->item->checkValid('minimal');
+
+        $data = $this->call(
+            'getAttachmentsLinks', [
+                'did' => 4,
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+            ]
+        );
+
+        if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
+            $this->createLicense(true);
+
+            return $this->getAttachmentsLinks(true);
+        } elseif ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
+            throw new RuntimeException("Dibuk getAttachmentsLinks call " . json_encode($data) . " failed with response " . json_encode($data));
+        }
+
+        $links = [];
+        $format = new Format();
+
+        if (isset($data['data'][0])) {   //eaudiobook - have chapters
+            return $data['data'][0]['formats'];
+        } else {
+            foreach ($data['data'] as $formatId => $url) {
+                $links[$format->getFormatCode($formatId)] = $url;
+            }
+        }
+
+        $this->item->setAttachmentsLinks($links);
+
+        return $links;
+    }
+
+    /**
      * @param string $format_code
      * @return mixed
      * @throws \Exception
