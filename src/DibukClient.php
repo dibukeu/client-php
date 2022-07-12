@@ -257,7 +257,8 @@ class DibukClient
         $this->item->checkValid('minimal');
 
         $data = $this->call(
-            'getAttachmentsLinks', [
+            'getAttachmentsLinks',
+            [
                 'did' => 4,
                 'book_id' => $this->item->id,
                 'user_id' => $this->user->id,
@@ -269,7 +270,7 @@ class DibukClient
 
             return $this->getAttachmentsLinks(true);
         } elseif ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
-            throw new RuntimeException("Dibuk getAttachmentsLinks call " . json_encode($data) . " failed with response " . json_encode($data));
+            throw new RuntimeException('Dibuk getAttachmentsLinks call ' . json_encode($data) . ' failed with response ' . json_encode($data));
         }
 
         $links = [];
