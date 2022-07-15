@@ -2,8 +2,8 @@
 
 namespace DibukEu;
 
-use Cake\I18n\Number;
 use Composer\CaBundle\CaBundle;
+use DibukEu\Entity\File;
 use DibukEu\Entity\Format;
 use DibukEu\Entity\Item;
 use DibukEu\Entity\User;
@@ -277,7 +277,7 @@ class DibukClient
         foreach ($data['data'] as $file) {
             $links[] = [
                 'name' => $file['filename'],
-                'size' => Number::toReadableSize($file['size']),
+                'size' => File::sizeToHumanReadable($file['size']),
                 'url' => $file['url'],
             ];
         }
