@@ -22,6 +22,7 @@
 * `$client->createLicense()` - kúpa knihy (buy v Dibuk)
 * `$client->sendByEmail($email)` - odoslanie eknihy emailom
 * `$client->getAllDownloadLinks()` - zoznam linkov na stiahnutie
+* `$client->getAttachmentsLinks()` - zoznam linkov na stiahnutie priloh k e-kniham
 * _showAllDownloadLinks - netestované_ - zobrazí HTML page s linkami na stiahnutie (možnosť nastaviť vlastný template)
 * _exportItems - netestované_ - vrati zoznam položiek katalógu (eknihy a audioknihy)
 * _exportCatalog - netestované_ - vrati zoznam kategórii katalógu

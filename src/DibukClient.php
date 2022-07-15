@@ -3,6 +3,7 @@
 namespace DibukEu;
 
 use Composer\CaBundle\CaBundle;
+use DibukEu\Entity\File;
 use DibukEu\Entity\Format;
 use DibukEu\Entity\Item;
 use DibukEu\Entity\User;
@@ -241,6 +242,52 @@ class DibukClient
         $this->item->setDownloadLinks($links);
 
         return $links;
+    }
+
+    /**
+     * @param bool $repeated
+     * @return array
+     * @throws \Exception
+     */
+    public function getAttachmentsLinks(bool $repeated = false): array
+    {
+        if ($this->item->attachments_links) {
+            return $this->item->attachments_links;
+        }
+        $this->user->checkValid('minimal');
+        $this->item->checkValid('minimal');
+
+        $data = $this->call(
+            'getAttachmentsLinks',
+            [
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+            ]
+        );
+
+        if (!$repeated && $data['status'] == self::STATUS_ERROR && $data['eNum'] == self::ERROR_NUM_NOT_BUYED) {
+            $this->createLicense(true);
+
+            return $this->getAttachmentsLinks(true);
+        } elseif ($data['status'] != self::STATUS_OK && $data['status'] != self::STATUS_ALREADY_EXISTS) {
+            throw new RuntimeException('Dibuk getAttachmentsLinks call ' . json_encode($data) . ' failed with response ' . json_encode($data));
+        }
+
+        $links = [];
+        foreach ($data['data'] as $file) {
+            $links[] = [
+                'name' => $file['filename'],
+                'size' => File::sizeToHumanReadable((int)$file['size']),
+                'url' => $file['url'],
+            ];
+        }
+
+        $this->item->setAttachmentsLinks($links);
+
+        return [
+            0 => [],
+            1 => ['links' => $links],
+        ];
     }
 
     /**

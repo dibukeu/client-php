@@ -10,25 +10,46 @@ namespace DibukEu\Entity;
 
 class Item
 {
-    /** @var int|null */
+    /**
+     * @var int|null
+     */
     public $id;
-    /** @var int|null */
+    /**
+     * @var int|null
+     */
     public $order_id;
-    /** @var int|null */
+    /**
+     * @var int|null
+     */
     public $payment_id;
-    /** @var float|null */
+    /**
+     * @var float|null
+     */
     public $price;
-    /** @var string|null */
+    /**
+     * @var string|null
+     */
     public $currency;
-    /** @var int|null */
+    /**
+     * @var int|null
+     */
     public $unique_id;
-    /** @var bool|null */
+    /**
+     * @var bool|null
+     */
     public $license_created;
-    /** @var array */
+    /**
+     * @var array
+     */
     public $download_links = [];
+    /**
+     * @var array
+     */
+    public $attachments_links = [];
 
     /**
      * Item constructor.
+     *
      * @param array $item
      */
     public function __construct($item)
@@ -62,6 +83,15 @@ class Item
     public function setDownloadLinks($links)
     {
         $this->download_links = $links;
+    }
+
+    /**
+     * @param array $links
+     * @return void
+     */
+    public function setAttachmentsLinks($links)
+    {
+        $this->attachments_links = $links;
     }
 
     /**
