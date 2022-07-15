@@ -2,6 +2,7 @@
 
 namespace DibukEu;
 
+use Cake\I18n\Number;
 use Composer\CaBundle\CaBundle;
 use DibukEu\Entity\Format;
 use DibukEu\Entity\Item;
@@ -259,7 +260,6 @@ class DibukClient
         $data = $this->call(
             'getAttachmentsLinks',
             [
-                'did' => 4,
                 'book_id' => $this->item->id,
                 'user_id' => $this->user->id,
             ]
@@ -274,19 +274,20 @@ class DibukClient
         }
 
         $links = [];
-        $format = new Format();
-
-        if (isset($data['data'][0])) {   //eaudiobook - have chapters
-            return $data['data'][0]['formats'];
-        } else {
-            foreach ($data['data'] as $formatId => $url) {
-                $links[$format->getFormatCode($formatId)] = $url;
-            }
+        foreach ($data['data'] as $file) {
+            $links[] = [
+                'name' => $file['filename'],
+                'size' => Number::toReadableSize($file['size']),
+                'url' => $file['url'],
+            ];
         }
 
         $this->item->setAttachmentsLinks($links);
 
-        return $links;
+        return [
+            0 => [],
+            1 => ['links' => $links],
+        ];
     }
 
     /**
