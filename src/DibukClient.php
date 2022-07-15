@@ -277,7 +277,7 @@ class DibukClient
         foreach ($data['data'] as $file) {
             $links[] = [
                 'name' => $file['filename'],
-                'size' => File::sizeToHumanReadable($file['size']),
+                'size' => File::sizeToHumanReadable((int)$file['size']),
                 'url' => $file['url'],
             ];
         }

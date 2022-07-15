@@ -4,7 +4,7 @@ namespace DibukEu\Entity;
 
 class File
 {
-    public static function sizeToHumanReadable($bytes, $precision = 0): string
+    public static function sizeToHumanReadable(int $bytes, int $precision = 0): string
     {
         $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
