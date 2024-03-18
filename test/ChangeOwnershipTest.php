@@ -51,6 +51,32 @@ class ChangeOwnershipTest extends DibukTestCase
         $this->assertTrue($this->dibukClient->changeOwnership());
     }
 
+    public function testCanBeGiftedCallApi(): void
+    {
+        $this->dibukClient = $this->getMockBuilder(DibukClient::class)
+            ->setConstructorArgs(
+                [[
+                    'signature' => 'test_secret',
+                    'sellerId' => 1,
+                    'version' => '2.3',
+                    'url' => 'api.dibuk.lsk',
+                ]]
+            )
+            ->setMethods(['call'])->getMock();
+        $this->dibukClient->expects($this->once())
+            ->method('call')
+            ->with(
+                'canBeGifted',
+                [
+                    'book_id' => 50,
+                    'user_id' => 101,
+                ]
+            )->willReturn(['status' => DibukClient::STATUS_OK]);
+
+        $this->setValidClient();
+        $this->assertTrue($this->dibukClient->canBeGifted());
+    }
+
     /**
      * @return                   void
      * @throws                   \Exception
