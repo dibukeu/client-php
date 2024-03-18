@@ -145,6 +145,21 @@ class DibukClient
     }
 
     /**
+     * @return array{status:string, eNum:int, eMsg:string}
+     * @throws \Exception
+     */
+    public function canBeGifted(): array
+    {
+        return $this->call(
+            'canBeGifted',
+            [
+                'book_id' => $this->item->id,
+                'user_id' => $this->user->id,
+            ]
+        );
+    }
+
+    /**
      * @return bool
      * @throws \Exception
      */
