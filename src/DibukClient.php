@@ -321,6 +321,30 @@ class DibukClient
     }
 
     /**
+     * @param int $id
+     * @return array
+     * @throws \Exception
+     */
+    public function getExtendedPreviewLinks(int $id)
+    {
+        $this->user->checkValid('minimal');
+
+        $data = $this->call(
+            'getExtendedPreviewLinks',
+            [
+                'book_id' => $id,
+                'user_id' => $this->user->id,
+            ]
+        );
+
+        if ($data['status'] != self::STATUS_OK) {
+            throw new RuntimeException("Dibuk getExtendedPreviewLinks call failed with response " . json_encode($data));
+        }
+
+        return $data['data'];
+    }
+
+    /**
      * @param bool $createLicenseForce
      * @return array|bool
      * @throws \Exception
