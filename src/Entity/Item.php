@@ -46,6 +46,10 @@ class Item
      * @var array
      */
     public $attachments_links = [];
+    /**
+     * @var int
+     */
+    public $purchased;
 
     /**
      * Item constructor.
@@ -61,7 +65,8 @@ class Item
             'price' => null,
             'currency' => null,
             'unique_id' => null,
-            'license_created' => null
+            'license_created' => null,
+            'purchased' => null,
         ];
 
         $this->id = $item['id'];
@@ -71,6 +76,7 @@ class Item
         $this->currency = $item['currency'];
         $this->unique_id = $item['unique_id'];
         $this->license_created = $item['license_created'];
+        $this->purchased = $item['purchased'];
 
         /* default values not accessible from construct */
         $this->download_links = [];
