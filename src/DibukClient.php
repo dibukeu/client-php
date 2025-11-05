@@ -368,6 +368,7 @@ class DibukClient
                 'user_name' => $this->user->name,
                 'user_surname' => $this->user->surname,
                 'uniq_license_id' => $this->item->unique_id,
+                'purchased' => $this->item->purchased,
             ]
         );
 
@@ -407,6 +408,7 @@ class DibukClient
                 'user_name' => $this->user->name,
                 'user_surname' => $this->user->surname,
                 'uniq_license_id' => $this->item->unique_id,
+                'purchased' => $this->item->purchased,
             ]
         );
 
