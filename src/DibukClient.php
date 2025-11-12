@@ -485,6 +485,12 @@ class DibukClient
         $this->item = new Item($item);
     }
 
+    public function test(?Item $item): int
+    {
+
+        return $item->id;
+    }
+
     /**
      * @return Item
      */
